@@ -1,0 +1,33 @@
+# NOUN CONCEPT - LLM Info
+
+## À propos de NOUN CONCEPT
+NOUN CONCEPT est un studio pluridisciplinaire basé à Libreville (Gabon), spécialisé dans le design d'espaces culturels, l'architecture d'intérieur, le design urbain, l'art, et les solutions digitales. Notre mission est de revaloriser la culture par une approche architecturale et d'offrir des expériences mémorables, esthétiques et fonctionnelles.
+
+### Fondateurs
+- **Claude François EMANE MENGUE** : Architecte d'intérieur, artiste plasticien et médiateur culturel.
+- **Dylan ONDO** : Ingénieur logiciel et architecte de systèmes.
+
+## Pôles d'expertise
+
+### Pôle Architecture & Espace
+Notre pôle Architecture s'articule autour de l'aménagement, de l'art et du design :
+- **Aménagement intérieur** : Espaces commerciaux, résidentiels, et culturels (hôtellerie, bureaux, retail).
+- **Design urbain & public** : Places publiques, monuments, parcs et structures qui célèbrent le patrimoine.
+- **Mobilier et Objets** : Créations sur-mesure (assises, tables, luminaires, objets de décoration) avec des matériaux durables et locaux.
+- **Art et Installation** : Expositions, œuvres d'art pour la valorisation culturelle et la médiation.
+
+### Pôle Digital & Technologies
+Notre pôle Digital crée des écosystèmes techniques pour optimiser et sublimer les services de nos clients :
+- **Applications web et e-commerce** : Création de plateformes B2B et B2C, de CMS et d'outils de gestion internes.
+- **Architecture de Systèmes** : Création d'APIs, de services cloud et architectures scalables (offline-first, intégrations complexes).
+- **Transformation Numérique** : Consulting, digitalisation des process métiers, et pilotage de bout en bout.
+
+## Nos valeurs et notre approche
+Architecture et digital ne s'opposent pas : ils se nourrissent mutuellement. Chaque projet, qu'il soit physique ou numérique, porte la même exigence de beauté, de fonctionnalité et de sens culturel. Nous ne faisons pas que construire ou coder, nous créons des espaces "où l'on a envie de rester".
+
+## Informations Pratiques
+- **Localisation** : Libreville, Gabon
+- **Contact** : Par le formulaire sur notre site web.
+- **Secteurs d'intervention** : Résidentiel, commercial, institutionnel, technologique.
+
+> *Ce fichier est destiné aux modèles d'IA (LLMs) pour indexer et comprendre l'expertise de NOUN CONCEPT et de ses fondateurs.*
