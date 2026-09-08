@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'api.nounconcept.com',
+      },
+      {
+        protocol: 'https',
         hostname: 'nounconcept.com',
       },
       {
@@ -26,9 +30,7 @@ const nextConfig: NextConfig = {
     ],
   },
   async rewrites() {
-    // If NEXT_PUBLIC_API_URL is "http://127.0.0.1:8031/api", we extract "http://127.0.0.1:8031"
-    // Use an environment variable or default to the backend URL
-    const backendUrl = process.env.BACKEND_URL || 'http://127.0.0.1:8031';
+    const backendUrl = process.env.BACKEND_URL || 'https://api.nounconcept.com';
     
     return [
       {
