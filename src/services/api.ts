@@ -1,7 +1,7 @@
 // On the server, we need an absolute URL to fetch data from the backend.
 // On the client, we use the proxy (e.g. /api) to avoid CORS issues and properly forward HttpOnly cookies.
 export const API_BASE_URL = typeof window === 'undefined'
-  ? `${process.env.BACKEND_URL || 'https://api.nounconcept.com'}/api`
+  ? `${process.env.BACKEND_URL || 'http://localhost:8031'}/api`
   : process.env.NEXT_PUBLIC_API_URL || '/api';
 
 export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
