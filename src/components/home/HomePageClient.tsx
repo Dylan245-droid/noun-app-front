@@ -233,10 +233,10 @@ function PoleSection({ title, description, href }: {
         <motion.img
           src={image}
           alt={title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          className="w-full h-full object-cover group-hover:group-active:scale-105 transition-transform duration-700"
           style={{ y: imageY }}
         />
-        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-500" />
+        <div className="absolute inset-0 bg-black/40 group-hover:group-active:bg-black/30 transition-colors duration-500" />
         <div className="absolute inset-0 flex items-end z-10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-16 lg:pb-24">
             <div className="flex items-end justify-between">
@@ -295,9 +295,11 @@ function PartnersCarousel() {
       className="relative overflow-hidden"
       onMouseEnter={() => shouldAnimate && setPaused(true)}
       onMouseLeave={() => shouldAnimate && setPaused(false)}
+      onTouchStart={() => shouldAnimate && setPaused(true)}
+      onTouchEnd={() => setTimeout(() => shouldAnimate && setPaused(false), 3000)}
     >
-      <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10" />
+      <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-white to-transparent z-10" />
+      <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-white to-transparent z-10" />
       <motion.div
         className="flex gap-6"
         animate={shouldAnimate && !paused ? { x: [0, -1400] } : {}}
@@ -365,9 +367,11 @@ function ProjectsCarousel() {
       className="relative overflow-hidden"
       onMouseEnter={() => shouldAnimate && setPaused(true)}
       onMouseLeave={() => shouldAnimate && setPaused(false)}
+      onTouchStart={() => shouldAnimate && setPaused(true)}
+      onTouchEnd={() => setTimeout(() => shouldAnimate && setPaused(false), 3000)}
     >
-      <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-secondary to-transparent z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-secondary to-transparent z-10" />
+      <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-secondary to-transparent z-10" />
+      <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-secondary to-transparent z-10" />
       <motion.div
         className="flex gap-6"
         animate={shouldAnimate && !paused ? { x: [0, -1600] } : {}}
@@ -377,14 +381,14 @@ function ProjectsCarousel() {
           <Link
             key={`${p.id}-${i}`}
             href={`/portfolio/${p.slug}`}
-            className="group flex-shrink-0 w-80 lg:w-96 block"
+            className="group flex-shrink-0 w-64 sm:w-80 lg:w-96 block"
           >
             <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-white/5">
               {p.cover_image ? (
                 <img
                   src={p.cover_image}
                   alt={p.title}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:group-active:scale-105 transition-transform duration-700"
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -443,7 +447,7 @@ function StatsSection({ stats }: { stats: typeof DEFAULTS.stats }) {
         backgroundSize: '40px 40px',
       }} />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-8">
           {items.map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -452,7 +456,7 @@ function StatsSection({ stats }: { stats: typeof DEFAULTS.stats }) {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.1 + i * 0.15, ease: [0.25, 0.1, 0.25, 1] }}
             >
-              <div className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tighter tabular-nums">
+              <div className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white tracking-tighter tabular-nums">
                 <Counter value={stat.value} suffix={stat.suffix || ''} />
               </div>
               <div className="text-white/40 text-xs tracking-[0.2em] uppercase mt-3 font-medium">
@@ -508,11 +512,11 @@ export default function HomePageClient({ initialData, initialFeaturedProjects }:
           }}
         />
 
-        <div className="relative z-10 w-full pb-12 lg:pb-16">
+        <div className="relative z-10 w-full pb-20 lg:pb-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-5xl">
               <motion.h1
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white tracking-tighter leading-[0.85]"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white tracking-tighter leading-[0.9] lg:leading-[0.85]"
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
@@ -581,7 +585,7 @@ export default function HomePageClient({ initialData, initialFeaturedProjects }:
 
       {/* ═══════════ PROJETS ═══════════ */}
       <section className="bg-secondary relative overflow-hidden">
-        <div className="py-20 lg:py-24 px-8 lg:px-16">
+        <div className="py-20 lg:py-24 px-4 sm:px-6 lg:px-16">
           <div className="flex items-end justify-between mb-4">
             <div>
               <span className="text-xs tracking-[0.3em] uppercase text-white/30 mb-4 block">{t('common.seeAll').replace('Voir', 'Sélection')}</span>
