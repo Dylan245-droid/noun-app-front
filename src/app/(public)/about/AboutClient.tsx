@@ -69,9 +69,9 @@ function FounderCard({ member, index }: { member: TeamMember; index: number }) {
           {skillsList.length > 0 && <div className="flex flex-wrap gap-2 mb-5">{skillsList.map((skill) => (<span key={skill} className="px-3 py-1.5 bg-white/10 text-white/80 text-xs font-medium rounded-full">{skill}</span>))}</div>}
           {(member.linkedin || member.github || member.portfolio_url) && (
             <div className="flex items-center gap-4 pt-5 border-t border-white/10">
-              {member.linkedin && (<a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-white/40 hover:text-white transition-colors group"><ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" /><span>LinkedIn</span></a>)}
-              {member.github && (<a href={member.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-white/40 hover:text-white transition-colors group"><Globe className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" /><span>GitHub</span></a>)}
-              {member.portfolio_url && (<a href={member.portfolio_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-white/40 hover:text-white transition-colors group"><ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" /><span>Portfolio</span></a>)}
+              {member.linkedin && (<a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-white/40 hover:text-white active:text-white transition-colors group"><ArrowUpRight className="w-3.5 h-3.5 group-hover:group-active:translate-x-0.5 group-hover:group-active:-translate-y-0.5 transition-transform" /><span>LinkedIn</span></a>)}
+              {member.github && (<a href={member.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-white/40 hover:text-white active:text-white transition-colors group"><Globe className="w-3.5 h-3.5 group-hover:group-active:translate-x-0.5 group-hover:group-active:-translate-y-0.5 transition-transform" /><span>GitHub</span></a>)}
+              {member.portfolio_url && (<a href={member.portfolio_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-white/40 hover:text-white active:text-white transition-colors group"><ExternalLink className="w-3.5 h-3.5 group-hover:group-active:translate-x-0.5 group-hover:group-active:-translate-y-0.5 transition-transform" /><span>Portfolio</span></a>)}
             </div>
           )}
         </div>
@@ -89,7 +89,7 @@ function TeamMemberCard({ member, index }: { member: TeamMember; index: number }
 
   return (
     <motion.div ref={ref} initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}>
-      <div className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-md hover:shadow-gray-100 transition-all duration-300">
+      <div className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-md hover:shadow-gray-100 active:shadow-md active:shadow-gray-100 transition-all duration-300">
         <div className="flex items-start gap-4">
           <div className="w-14 h-14 rounded-xl bg-gray-50 overflow-hidden border border-gray-100 flex items-center justify-center shrink-0">
             {member.photo ? (<img src={member.photo} alt={member.full_name} className="w-full h-full object-cover" />) : (<span className="text-lg font-bold text-primary">{member.first_name.charAt(0)}{member.last_name.charAt(0)}</span>)}
@@ -191,11 +191,28 @@ export default function AboutClient({ initialData }: any) {
             </div>
           </div>
           <div className="divide-y divide-secondary/5">
+            <motion.div
+              className="md:hidden px-4 sm:px-6 lg:px-8 pt-20 lg:pt-24 pb-8"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              <div className="flex items-center gap-3 mb-4"><span className="w-8 h-[1px] bg-primary" /><span className="text-[10px] tracking-[0.3em] uppercase text-muted">{story.label}</span></div>
+              <p className="text-2xl font-light text-secondary leading-snug tracking-tight">{story.title}</p>
+            </motion.div>
             {story.paragraphs.map((paragraph: string, i: number) => (
-              <div key={i} className="px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+              <motion.div
+                key={i}
+                className="px-4 sm:px-6 lg:px-8 py-16 lg:py-20"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-10%' }}
+                transition={{ duration: 0.6, delay: i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+              >
                 <span className="text-[10px] tracking-[0.3em] uppercase text-muted mb-4 block">0{i + 1}</span>
                 <p className="text-muted leading-relaxed text-lg">{paragraph}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -205,10 +222,16 @@ export default function AboutClient({ initialData }: any) {
       {!loading && founders.length > 0 && (
         <section className="bg-secondary">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="pt-20 lg:pt-24 pb-12 lg:pb-16">
+            <motion.div
+              className="pt-20 lg:pt-24 pb-12 lg:pb-16"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+            >
               <div className="flex items-center gap-3 mb-4"><Star className="w-5 h-5 text-amber-400" /><span className="text-[10px] tracking-[0.3em] uppercase text-white/40 font-medium">{t('about.founders.label')}</span></div>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight whitespace-pre-line">{t('about.founders.title')}</h2>
-            </div>
+            </motion.div>
             <div className="grid md:grid-cols-2 gap-8 lg:gap-12 pb-20 lg:pb-24">
               {founders.map((member, i) => (<FounderCard key={member.id} member={member} index={i} />))}
             </div>
@@ -220,10 +243,16 @@ export default function AboutClient({ initialData }: any) {
       {!loading && team.length > 0 && (
         <section className="bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="pt-20 lg:pt-24 pb-12 lg:pb-16">
+            <motion.div
+              className="pt-20 lg:pt-24 pb-12 lg:pb-16"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+            >
               <div className="flex items-center gap-3 mb-4"><span className="w-8 h-[1px] bg-primary" /><span className="text-[10px] tracking-[0.3em] uppercase text-muted font-medium">{t('about.team.label')}</span></div>
               <h2 className="text-3xl sm:text-4xl font-bold text-secondary tracking-tight">{t('about.team.title')}</h2>
-            </div>
+            </motion.div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-20 lg:pb-24">
               {team.map((member, i) => (<TeamMemberCard key={member.id} member={member} index={i} />))}
             </div>
@@ -234,29 +263,47 @@ export default function AboutClient({ initialData }: any) {
       {/* Two Pillars */}
       <section className="bg-secondary">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="pt-20 lg:pt-24">
+          <motion.div
+            className="pt-20 lg:pt-24"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-10%' }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          >
             <div className="flex items-center gap-3 mb-16"><span className="w-8 h-[1px] bg-white/30" /><span className="text-[10px] tracking-[0.3em] uppercase text-white/40">{pillars.label}</span></div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Architecture pillar */}
         <div className="border-t border-white/5">
           <div className="grid md:grid-cols-12">
-            <div className="md:col-span-4 px-4 sm:px-6 lg:px-8 py-16 lg:py-24 border-b md:border-b-0 md:border-r border-white/5">
+            <motion.div
+              className="md:col-span-4 px-4 sm:px-6 lg:px-8 py-16 lg:py-24 border-b md:border-b-0 md:border-r border-white/5"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+            >
               <div className="sticky top-32">
                 <div className="w-14 h-14 rounded-lg bg-white/5 flex items-center justify-center mb-6"><Building2 className="w-7 h-7 text-white/40" /></div>
                 <h3 className="text-2xl lg:text-3xl font-bold text-white tracking-tighter mb-4">{pillars.architecture.title}</h3>
                 <p className="text-white/40 text-sm leading-relaxed">{pillars.architecture.subtitle}</p>
               </div>
-            </div>
+            </motion.div>
             <div className="md:col-span-8 px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
               <div className="grid sm:grid-cols-2 gap-x-12 gap-y-8">
                 {pillars.architecture.items.map((item: { title: string; desc: string }, i: number) => (
-                  <div key={item.title}>
+                  <motion.div
+                    key={item.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-10%' }}
+                    transition={{ duration: 0.5, delay: i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                  >
                     <span className="text-[10px] tracking-[0.3em] uppercase text-white/20 mb-2 block">0{i + 1}</span>
                     <h4 className="text-white font-semibold mb-1">{item.title}</h4>
                     <p className="text-white/40 text-sm leading-relaxed">{item.desc}</p>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -266,21 +313,33 @@ export default function AboutClient({ initialData }: any) {
         {/* Digital pillar */}
         <div className="border-t border-white/5">
           <div className="grid md:grid-cols-12">
-            <div className="md:col-span-4 px-4 sm:px-6 lg:px-8 py-16 lg:py-24 border-b md:border-b-0 md:border-r border-white/5">
+            <motion.div
+              className="md:col-span-4 px-4 sm:px-6 lg:px-8 py-16 lg:py-24 border-b md:border-b-0 md:border-r border-white/5"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+            >
               <div className="sticky top-32">
                 <div className="w-14 h-14 rounded-lg bg-white/5 flex items-center justify-center mb-6"><Code className="w-7 h-7 text-white/40" /></div>
                 <h3 className="text-2xl lg:text-3xl font-bold text-white tracking-tighter mb-4">{pillars.digital.title}</h3>
                 <p className="text-white/40 text-sm leading-relaxed">{pillars.digital.subtitle}</p>
               </div>
-            </div>
+            </motion.div>
             <div className="md:col-span-8 px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
               <div className="grid sm:grid-cols-2 gap-x-12 gap-y-8">
                 {pillars.digital.items.map((item: { title: string; desc: string }, i: number) => (
-                  <div key={item.title}>
+                  <motion.div
+                    key={item.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-10%' }}
+                    transition={{ duration: 0.5, delay: i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                  >
                     <span className="text-[10px] tracking-[0.3em] uppercase text-white/20 mb-2 block">0{i + 1}</span>
                     <h4 className="text-white font-semibold mb-1">{item.title}</h4>
                     <p className="text-white/40 text-sm leading-relaxed">{item.desc}</p>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -294,18 +353,36 @@ export default function AboutClient({ initialData }: any) {
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '48px 48px' }} />
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="flex items-center justify-center gap-3 mb-12">
+            <motion.div
+              className="flex items-center justify-center gap-3 mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            >
               <span className="w-8 h-[1px] bg-white/30" /><span className="text-[10px] tracking-[0.3em] uppercase text-white/40 font-medium">{vision.label}</span><span className="w-8 h-[1px] bg-white/30" />
-            </div>
-            <blockquote className="text-2xl sm:text-3xl lg:text-4xl font-light text-white leading-snug tracking-tight mb-12">
+            </motion.div>
+            <motion.blockquote
+              className="text-2xl sm:text-3xl lg:text-4xl font-light text-white leading-snug tracking-tight mb-12"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.7, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+            >
               {vision.quote.split(vision.highlights[0]).map((part: string, i: number) => (
                 <span key={i}>
                   {part}
                   {i === 0 && vision.highlights[0] && <span className="font-medium text-white">{vision.highlights[0]}</span>}
                 </span>
               ))}
-            </blockquote>
-            <p className="text-white/40 max-w-lg mx-auto text-sm leading-relaxed">{vision.footer}</p>
+            </motion.blockquote>
+            <motion.p
+              className="text-white/40 max-w-lg mx-auto text-sm leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            >{vision.footer}</motion.p>
           </div>
         </div>
       </section>

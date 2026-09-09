@@ -86,7 +86,13 @@ export default function ContactClient({ initialData }: any) {
 
       <section className="bg-white">
         <div className="grid md:grid-cols-2 min-h-[80vh]">
-          <div className="px-4 sm:px-6 lg:px-8 py-20 lg:py-24">
+          <motion.div
+            className="px-4 sm:px-6 lg:px-8 py-20 lg:py-24"
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-10%' }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          >
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="grid sm:grid-cols-2 gap-8">
                 <div>
@@ -113,19 +119,25 @@ export default function ContactClient({ initialData }: any) {
                 <Textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={5} placeholder={t('contact.message')} className="border-0 border-b border-secondary/10 rounded-none px-0 focus:border-primary bg-transparent resize-none" />
               </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}
-              <button type="submit" disabled={isSubmitting} className="inline-flex items-center gap-3 px-8 py-4 bg-secondary text-white text-sm font-medium tracking-wide hover:bg-secondary/90 transition-colors disabled:opacity-50">{isSubmitting ? '...' : (<>{t('contact.send')} <Send className="w-4 h-4" /></>)}</button>
+              <button type="submit" disabled={isSubmitting} className="inline-flex items-center gap-3 px-8 py-4 bg-secondary text-white text-sm font-medium tracking-wide hover:bg-secondary/90 active:bg-secondary/90 transition-colors disabled:opacity-50">{isSubmitting ? '...' : (<>{t('contact.send')} <Send className="w-4 h-4" /></>)}</button>
             </form>
-          </div>
+          </motion.div>
 
-          <div className="bg-accent px-4 sm:px-6 lg:px-8 py-20 lg:py-24 flex flex-col justify-between">
+          <motion.div
+            className="bg-accent px-4 sm:px-6 lg:px-8 py-20 lg:py-24 flex flex-col justify-between"
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-10%' }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+          >
             <div>
               <div className="flex items-center gap-3 mb-12"><span className="w-8 h-[1px] bg-primary" /><span className="text-[10px] tracking-[0.3em] uppercase text-muted">{t('contact.info')}</span></div>
               <div className="space-y-8">
                 <a href={`mailto:${settings?.contact_email || 'contact@nounconcept.com'}`} className="flex items-center gap-5 group">
-                  <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center group-hover:bg-primary transition-colors duration-300"><Mail className="w-5 h-5 text-secondary/40 group-hover:text-white transition-colors" /></div>
+                  <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center group-hover:group-active:bg-primary transition-colors duration-300"><Mail className="w-5 h-5 text-secondary/40 group-hover:group-active:text-white transition-colors" /></div>
                   <div>
                     <span className="text-[10px] tracking-[0.2em] uppercase text-muted block mb-1">{t('contact.emailLabel')}</span>
-                    <span className="text-secondary font-medium group-hover:text-primary transition-colors">{settings?.contact_email || 'contact@nounconcept.com'}</span>
+                    <span className="text-secondary font-medium group-hover:group-active:text-primary transition-colors">{settings?.contact_email || 'contact@nounconcept.com'}</span>
                   </div>
                 </a>
                 <div className="flex items-center gap-5 group">
@@ -148,7 +160,7 @@ export default function ContactClient({ initialData }: any) {
               <span className="text-[10px] tracking-[0.3em] uppercase text-muted block mb-3">{t('contact.hours')}</span>
               {(settings?.working_hours || 'Lundi - Vendredi : 8h - 17h\nSamedi : Sur rendez-vous').split('\n').map((line, i) => (<p key={i} className="text-secondary/60 text-sm">{line}</p>))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>

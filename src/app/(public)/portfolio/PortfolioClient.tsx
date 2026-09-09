@@ -58,7 +58,7 @@ function ProjectLarge({ project, index }: { project: Project; index: number }) {
                 <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tighter">{project.title}</h3>
                 <p className="text-white/60 max-w-sm mt-2 text-sm line-clamp-2">{project.short_description}</p>
               </div>
-              <ArrowDownRight className="w-8 h-8 text-white/30 group-hover:text-white group-hover:translate-x-2 group-hover:translate-y-2 transition-all duration-500 hidden sm:block" />
+              <ArrowDownRight className="w-8 h-8 text-white/30 group-hover:group-active:text-white group-hover:group-active:translate-x-2 group-hover:group-active:translate-y-2 transition-all duration-500 hidden sm:block" />
             </div>
           </div>
         </div>
@@ -76,14 +76,14 @@ function ProjectSmall({ project, index }: { project: Project; index: number }) {
     <motion.div ref={ref} initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}>
       <Link href={`/portfolio/${project.slug}`} className="group block">
         <div className="relative aspect-[4/5] overflow-hidden">
-          {imgUrl ? (<img src={imgUrl} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />) : (<div className="w-full h-full bg-gray-100" />)}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+          {imgUrl ? (<img src={imgUrl} alt={project.title} className="w-full h-full object-cover group-hover:group-active:scale-105 transition-transform duration-700" />) : (<div className="w-full h-full bg-gray-100" />)}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent sm:opacity-0 sm:group-hover:sm:group-active:opacity-100 transition-opacity duration-500" />
+          <div className="absolute bottom-0 left-0 right-0 p-6 sm:translate-y-4 sm:opacity-0 sm:group-hover:sm:group-active:translate-y-0 sm:group-hover:sm:group-active:opacity-100 transition-all duration-500">
             <span className="text-[10px] tracking-[0.2em] uppercase text-white/50 mb-2 block">{project.category}</span>
             <h3 className="text-lg font-bold text-white tracking-tight">{project.title}</h3>
             {project.client_name && <p className="text-white/50 text-xs mt-1">{project.client_name}</p>}
           </div>
-          <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500"><ArrowDownRight className="w-5 h-5 text-white" /></div>
+          <div className="absolute top-4 right-4 hidden sm:block opacity-0 group-hover:group-active:opacity-100 transition-opacity duration-500"><ArrowDownRight className="w-5 h-5 text-white" /></div>
         </div>
       </Link>
     </motion.div>
@@ -198,7 +198,7 @@ export default function PortfolioClient({ initialData, initialProjects, initialF
         <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-10%' }} transition={{ duration: 0.8 }} className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 tracking-tighter whitespace-pre-line">{cta.title}</h2>
           <p className="text-white/50 max-w-md mx-auto mb-10 text-sm leading-relaxed">{cta.subtitle}</p>
-          <Link href={cta.btn_href} className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-secondary text-sm font-medium tracking-wide hover:bg-white/90 transition-all hover:scale-105 hover:shadow-xl hover:shadow-primary/10">{cta.btn_text} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></Link>
+          <Link href={cta.btn_href} className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-secondary text-sm font-medium tracking-wide hover:bg-white/90 active:bg-white/90 transition-all hover:active:scale-105 hover:shadow-xl hover:shadow-primary/10">{cta.btn_text} <ArrowRight className="w-4 h-4 group-hover:group-active:translate-x-1 transition-transform" /></Link>
         </motion.div>
       </motion.section>
     </div>
