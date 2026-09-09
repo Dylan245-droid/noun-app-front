@@ -1,7 +1,7 @@
 'use client'
 import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight, ArrowDownRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useHeaderTheme } from '@/hooks/useHeaderTheme'
@@ -173,9 +173,9 @@ function ManifestoText({ content }: { content: typeof DEFAULTS.manifesto }) {
   return (
     <div ref={containerRef} className="max-w-5xl mx-auto">
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.6 }}
+        initial={{ opacity: 0, x: -20 }}
+        animate={inView ? { opacity: 1, x: 0 } : {}}
+        transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         className="flex items-center gap-3 mb-12 lg:mb-16"
       >
         <span className="w-8 h-[1px] bg-primary-light/60" />
@@ -188,9 +188,9 @@ function ManifestoText({ content }: { content: typeof DEFAULTS.manifesto }) {
         {content.words.map((word, i) => (
           <motion.span
             key={i}
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.4, delay: i * 0.02 }}
+            initial={{ opacity: 0, y: 15 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.1 + i * 0.025, ease: [0.25, 0.1, 0.25, 1] }}
             className={`inline-block text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-light tracking-tight leading-[1.3] ${
               highlights.has(word) ? 'text-white font-medium' : 'text-white/40'
             }`}
@@ -216,6 +216,11 @@ function PoleSection({ title, description, href }: {
   description: string
   href: string
 }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { once: true, margin: '-15%' })
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+  const imageY = useTransform(scrollYProgress, [0, 1], [-40, 40])
+
   const images: Record<string, string> = {
     'Architecture': 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80',
     'Digital': 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=80',
@@ -224,21 +229,42 @@ function PoleSection({ title, description, href }: {
 
   return (
     <Link href={href} className="group block relative">
-      <div className="relative h-[80vh] lg:h-screen overflow-hidden">
-        <img src={image} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+      <div ref={ref} className="relative h-[80vh] lg:h-screen overflow-hidden">
+        <motion.img
+          src={image}
+          alt={title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          style={{ y: imageY }}
+        />
         <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-500" />
         <div className="absolute inset-0 flex items-end z-10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-16 lg:pb-24">
             <div className="flex items-end justify-between">
               <div>
-                <h2 className="text-5xl sm:text-6xl lg:text-8xl font-bold text-white tracking-tighter mb-4">
+                <motion.h2
+                  className="text-5xl sm:text-6xl lg:text-8xl font-bold text-white tracking-tighter mb-4"
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                >
                   {title}
-                </h2>
-                <p className="text-white/60 max-w-md text-sm leading-relaxed">
+                </motion.h2>
+                <motion.p
+                  className="text-white/60 max-w-md text-sm leading-relaxed"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                >
                   {description}
-                </p>
+                </motion.p>
               </div>
-              <ArrowDownRight className="w-10 h-10 text-white/40 group-hover:text-white group-hover:translate-x-2 group-hover:translate-y-2 transition-all duration-500 hidden sm:block" />
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.5 }}
+              >
+                <ArrowDownRight className="w-10 h-10 text-white/40 group-hover:text-white group-hover:translate-x-2 group-hover:translate-y-2 transition-all duration-500 hidden sm:block" />
+              </motion.div>
             </div>
           </div>
         </div>
@@ -392,6 +418,8 @@ function ProjectsCarousel() {
 function StatsSection({ stats }: { stats: typeof DEFAULTS.stats }) {
   const { t } = useTranslation()
   const [liveStats, setLiveStats] = useState({ projects: 0, partners: 0 })
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { once: true, margin: '-10%' })
 
   useEffect(() => {
     Promise.all([
@@ -409,22 +437,28 @@ function StatsSection({ stats }: { stats: typeof DEFAULTS.stats }) {
   })
 
   return (
-    <section className="py-32 lg:py-40 bg-primary relative overflow-hidden">
+    <section ref={ref} className="py-32 lg:py-40 bg-primary relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03]" style={{
         backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
         backgroundSize: '40px 40px',
       }} />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-          {items.map((stat) => (
-            <div key={stat.label} className="text-center lg:text-left">
+          {items.map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              className="text-center lg:text-left"
+              initial={{ opacity: 0, y: 30 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.1 + i * 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+            >
               <div className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tighter tabular-nums">
                 <Counter value={stat.value} suffix={stat.suffix || ''} />
               </div>
               <div className="text-white/40 text-xs tracking-[0.2em] uppercase mt-3 font-medium">
                 {stat.label}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -582,27 +616,46 @@ export default function HomePageClient({ initialData, initialFeaturedProjects }:
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[200px]" />
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
+            <motion.span
+              className="text-xs tracking-[0.3em] uppercase text-white/30 mb-8 block"
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-10%' }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             >
-              <span className="text-xs tracking-[0.3em] uppercase text-white/30 mb-8 block">{cta.label}</span>
-              <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white tracking-tighter leading-[0.9] mb-8 whitespace-pre-line">
-                {cta.title}
-              </h2>
-              <p className="text-white/40 max-w-md text-sm leading-relaxed mb-12">
-                {cta.subtitle}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link href={cta.primary_btn.href} className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-secondary text-sm font-medium tracking-wide hover:bg-white/90 transition-colors">
-                  {cta.primary_btn.text} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link href={cta.secondary_btn.href} className="inline-flex items-center gap-3 px-8 py-4 border border-white/20 text-white text-sm font-medium tracking-wide hover:bg-white/10 transition-colors">
-                  {cta.secondary_btn.text}
-                </Link>
-              </div>
+              {cta.label}
+            </motion.span>
+            <motion.h2
+              className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white tracking-tighter leading-[0.9] mb-8 whitespace-pre-line"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.7, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              {cta.title}
+            </motion.h2>
+            <motion.p
+              className="text-white/40 max-w-md text-sm leading-relaxed mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              {cta.subtitle}
+            </motion.p>
+            <motion.div
+              className="flex flex-col sm:flex-row gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.6, delay: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              <Link href={cta.primary_btn.href} className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-secondary text-sm font-medium tracking-wide hover:bg-white/90 transition-colors">
+                {cta.primary_btn.text} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link href={cta.secondary_btn.href} className="inline-flex items-center gap-3 px-8 py-4 border border-white/20 text-white text-sm font-medium tracking-wide hover:bg-white/10 transition-colors">
+                {cta.secondary_btn.text}
+              </Link>
             </motion.div>
           </div>
         </div>
