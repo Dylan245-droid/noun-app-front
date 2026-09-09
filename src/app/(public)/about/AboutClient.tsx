@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useHeaderTheme } from '@/hooks/useHeaderTheme'
 import { usePageContent } from '@/hooks/usePageContent'
 import { fetchApi } from '@/services/api'
+import { Hero } from '@/components/hero/Hero'
 
 interface TeamMember {
   id: number
@@ -109,7 +110,6 @@ function TeamMemberCard({ member, index }: { member: TeamMember; index: number }
 export default function AboutClient({ initialData }: any) {
   const { t } = useTranslation()
   useHeaderTheme('dark')
-  const heroRef = useRef<HTMLDivElement>(null)
 
   const [founders, setFounders] = useState<TeamMember[]>([])
   const [team, setTeam] = useState<TeamMember[]>([])
@@ -171,32 +171,15 @@ export default function AboutClient({ initialData }: any) {
   return (
     <div>
       {/* Hero */}
-      <section ref={heroRef} className="relative h-screen flex items-end bg-secondary overflow-hidden">
-        <div className="absolute inset-0">
-          <img src="/diapo2.jpg" alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/70 to-secondary/50" />
-          <div className="absolute inset-0 bg-black/40" />
-        </div>
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-[1]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px)', backgroundSize: '120px 120px' }} />
-        <div className="relative z-10 w-full pb-48 lg:pb-64">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-5xl">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="w-8 h-[1px] bg-white/40" />
-                <span className="text-[10px] tracking-[0.3em] uppercase text-white/50 font-medium">{hero.label}</span>
-              </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tighter leading-[0.9] mb-6">{hero.title}</h1>
-              <p className="text-white/40 max-w-md text-sm leading-relaxed tracking-wide">{hero.subtitle}</p>
-            </div>
-          </div>
-        </div>
-        <div className="absolute bottom-8 right-8 lg:right-16 flex items-center gap-3 z-10">
-          <span className="text-[10px] tracking-[0.3em] uppercase text-white/30">Scroll</span>
-          <div className="w-[1px] h-10 bg-white/20 relative">
-            <div className="absolute top-0 w-[1px] h-3 bg-white/60 animate-pulse" />
-          </div>
-        </div>
-      </section>
+      <Hero
+        image="/diapo2.jpg"
+        label={hero.label}
+        title={hero.title}
+        subtitle={hero.subtitle}
+        showGrid
+        scrollLabel="Scroll"
+        height="h-screen"
+      />
 
       {/* Story */}
       <section className="bg-white">

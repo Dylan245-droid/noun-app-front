@@ -1,10 +1,11 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, ArrowDownRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useHeaderTheme } from '@/hooks/useHeaderTheme'
 import { usePageContent } from '@/hooks/usePageContent'
+import { Hero } from '@/components/hero/Hero'
 
 interface Service {
   id: number
@@ -27,9 +28,7 @@ export default function ArchitectureClient({ initialData, services: initialServi
   const { t } = useTranslation()
   useHeaderTheme('dark')
   const { data } = usePageContent('architecture')
-    const heroRef = useRef<HTMLDivElement>(null)
-
-  const [services, setServices] = useState<Service[]>(initialServices || [])
+    const [services, setServices] = useState<Service[]>(initialServices || [])
   const [projects, setProjects] = useState<ApiProject[]>(initialProjects || [])
   const [loading, setLoading] = useState(false)
 
@@ -50,34 +49,12 @@ export default function ArchitectureClient({ initialData, services: initialServi
 
   return (
     <div>
-      <section ref={heroRef} className="relative min-h-screen flex items-end bg-secondary overflow-hidden">
-        <div className="absolute inset-0">
-          <img src="/diapo4.jpg" alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/70 to-secondary/50" />
-          <div className="absolute inset-0 bg-black/40" />
-        </div>
-
-        <div className="relative z-10 w-full pb-48 lg:pb-64">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="w-8 h-[1px] bg-white/40" />
-                <span className="text-[10px] tracking-[0.3em] uppercase text-white/50 font-medium">
-                  {hero.label}
-                </span>
-              </div>
-
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tighter leading-[0.9] mb-6 whitespace-pre-line">
-                {hero.title}
-              </h1>
-
-              <p className="text-white/40 max-w-md text-sm leading-relaxed tracking-wide">
-                {hero.subtitle}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Hero
+        image="/diapo4.jpg"
+        label={hero.label}
+        title={hero.title}
+        subtitle={hero.subtitle}
+      />
 
       {/* Services — Bento Grid */}
       <section className="bg-white">
