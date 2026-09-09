@@ -84,15 +84,22 @@ function Counter({ value, suffix = '' }: { value: number; suffix?: string }) {
 }
 
 /* ─── Hero Slideshow ─── */
-function HeroSlideshow({ images }: { images: string[] }) {
+function HeroSlideshow({ images, delayStart = 1500 }: { images: string[]; delayStart?: number }) {
   const [current, setCurrent] = useState(0)
+  const [started, setStarted] = useState(false)
 
   useEffect(() => {
+    const timer = setTimeout(() => setStarted(true), delayStart)
+    return () => clearTimeout(timer)
+  }, [delayStart])
+
+  useEffect(() => {
+    if (!started) return
     const id = setInterval(() => {
       setCurrent((prev) => (prev + 1) % images.length)
     }, 5000)
     return () => clearInterval(id)
-  }, [images.length])
+  }, [started, images.length])
 
   return (
     <div className="absolute inset-0">
@@ -100,7 +107,7 @@ function HeroSlideshow({ images }: { images: string[] }) {
         <motion.div
           key={i}
           className="absolute inset-0"
-          initial={false}
+          initial={i === 0 ? { opacity: 0 } : false}
           animate={{ opacity: i === current ? 1 : 0 }}
           transition={{ duration: 1.5, ease: [0.25, 0.1, 0.25, 1] }}
         >
@@ -108,16 +115,31 @@ function HeroSlideshow({ images }: { images: string[] }) {
             src={src}
             alt=""
             className="w-full h-full object-cover"
-            initial={{ scale: 1.1 }}
-            animate={{ scale: i === current ? 1 : 1.1 }}
-            transition={{ duration: 8, ease: 'linear' }}
+            initial={{ scale: 1.08 }}
+            animate={{ scale: i === current ? 1 : 1.08 }}
+            transition={{ duration: started ? 8 : 1.2, ease: 'linear' }}
           />
         </motion.div>
       ))}
-      <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/70 to-secondary/50" />
-      <div className="absolute inset-0 bg-black/40" />
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/70 to-secondary/50"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
+      />
+      <motion.div
+        className="absolute inset-0 bg-black/40"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
+      />
 
-      <div className="absolute bottom-8 left-8 lg:left-16 flex items-center gap-2">
+      <motion.div
+        className="absolute bottom-8 left-8 lg:left-16 flex items-center gap-2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: started ? 1 : 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
         {images.map((_: string, i: number) => (
           <button
             key={i}
@@ -125,7 +147,7 @@ function HeroSlideshow({ images }: { images: string[] }) {
             className="relative h-[1px] bg-white/20 overflow-hidden"
             style={{ width: 32 }}
           >
-            {i === current && (
+            {i === current && started && (
               <motion.div
                 key={current}
                 className="absolute inset-0 bg-white"
@@ -136,7 +158,7 @@ function HeroSlideshow({ images }: { images: string[] }) {
             )}
           </button>
         ))}
-      </div>
+      </motion.div>
     </div>
   )
 }
@@ -441,31 +463,62 @@ export default function HomePageClient({ initialData, initialFeaturedProjects }:
       {/* ═══════════ HERO ═══════════ */}
       <section className="relative h-screen flex items-end bg-secondary overflow-hidden">
         <HeroSlideshow images={diapos} />
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-[1]" style={{
-          backgroundImage: 'linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px)',
-          backgroundSize: '120px 120px',
-        }} />
+        <motion.div
+          className="absolute inset-0 opacity-[0.03] pointer-events-none z-[1]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.03 }}
+          transition={{ duration: 1.2, delay: 0.3 }}
+          style={{
+            backgroundImage: 'linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px)',
+            backgroundSize: '120px 120px',
+          }}
+        />
 
         <div className="relative z-10 w-full pb-12 lg:pb-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-5xl">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white tracking-tighter leading-[0.85]">
+              <motion.h1
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white tracking-tighter leading-[0.85]"
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+              >
                 {hero.title_line1} <span className="text-white/80">{hero.title_highlight1}</span><br/>
-                {hero.title_line2} <span className="text-white/80">{hero.title_highlight2}</span>
-              </h1>
-              <p className="text-white/40 max-w-md mt-8 text-sm leading-relaxed tracking-wide whitespace-pre-line">
+                <motion.span
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+                >
+                  {hero.title_line2} <span className="text-white/80">{hero.title_highlight2}</span>
+                </motion.span>
+              </motion.h1>
+              <motion.p
+                className="text-white/40 max-w-md mt-8 text-sm leading-relaxed tracking-wide whitespace-pre-line"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 1.0, ease: [0.25, 0.1, 0.25, 1] }}
+              >
                 {hero.subtitle}
-              </p>
+              </motion.p>
             </div>
           </div>
         </div>
 
-        <div className="absolute bottom-8 right-8 lg:right-16 flex items-center gap-3 z-10">
+        <motion.div
+          className="absolute bottom-8 right-8 lg:right-16 flex items-center gap-3 z-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 1.3 }}
+        >
           <span className="text-[10px] tracking-[0.3em] uppercase text-white/30">{t('common.scroll')}</span>
           <div className="w-[1px] h-10 bg-white/20 relative">
-            <div className="absolute top-0 w-[1px] h-3 bg-white/60 animate-pulse" />
+            <motion.div
+              className="absolute top-0 w-[1px] h-3 bg-white/60"
+              animate={{ height: [4, 16, 4] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
+            />
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* ═══════════ MANIFESTO ═══════════ */}
