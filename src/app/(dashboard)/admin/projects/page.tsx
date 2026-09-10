@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Edit2, Trash2, X, Upload, Image as ImageIcon, Eye, EyeOff, Calendar, MapPin, Code, Star, Link as LinkIcon } from 'lucide-react'
+import { Plus, Edit2, Trash2, X, Upload, Image as ImageIcon, Eye, EyeOff, Calendar, MapPin, Code, Star, Link as LinkIcon, ZoomIn, ChevronLeft, ChevronRight, Globe } from 'lucide-react'
 import Link from 'next/link'
 import { fetchApi } from '@/services/api'
 
@@ -75,6 +75,11 @@ export default function ProjectsPage() {
   const [imageFiles, setImageFiles] = useState<File[]>([])
   const [existingImages, setExistingImages] = useState<ProjectImage[]>([])
   const [saving, setSaving] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const [showClientModal, setShowClientModal] = useState(false)
+  const [clientForm, setClientForm] = useState({ name: '', website: '' })
+  const [clientLogoFile, setClientLogoFile] = useState<File | null>(null)
+  const [savingClient, setSavingClient] = useState(false)
 
   const lang = langTab
 
@@ -217,6 +222,47 @@ export default function ProjectsPage() {
     }
   }
 
+  const handleCreateClient = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setSavingClient(true)
+    try {
+      const fd = new FormData()
+      fd.append('name', clientForm.name)
+      fd.append('website', clientForm.website)
+      fd.append('is_partner', 'false')
+      if (clientLogoFile) fd.append('logo', clientLogoFile)
+      const newClient = await fetchApi('/portfolio/clients/', { method: 'POST', body: fd })
+      await fetchClients()
+      setFormData({ ...formData, client: newClient.id })
+      setShowClientModal(false)
+      setClientForm({ name: '', website: '' })
+      setClientLogoFile(null)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setSavingClient(false)
+    }
+  }
+
+  const allLightboxImages = [...existingImages.map((img) => img.image), ...imageFiles.map((f) => URL.createObjectURL(f))]
+
+  const handleLightboxNav = useCallback((dir: 'prev' | 'next') => {
+    if (lightboxIndex === null) return
+    if (dir === 'prev') setLightboxIndex((i) => (i! > 0 ? i! - 1 : allLightboxImages.length - 1))
+    else setLightboxIndex((i) => (i! < allLightboxImages.length - 1 ? i! + 1 : 0))
+  }, [lightboxIndex, allLightboxImages.length])
+
+  useEffect(() => {
+    if (lightboxIndex === null) return
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setLightboxIndex(null)
+      if (e.key === 'ArrowLeft') handleLightboxNav('prev')
+      if (e.key === 'ArrowRight') handleLightboxNav('next')
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [lightboxIndex, handleLightboxNav])
+
   if (loading) return <p className="text-muted">Chargement...</p>
 
   return (
@@ -331,20 +377,27 @@ export default function ProjectsPage() {
                   <div>
                     <label className="block text-xs font-semibold text-secondary mb-2">
                       Client
-                      <Link href="/admin/clients" className="float-right text-primary hover:underline font-normal normal-case">
-                        Gérer les clients →
-                      </Link>
                     </label>
-                    <select
-                      value={formData.client || ''}
-                      onChange={(e) => setFormData({ ...formData, client: e.target.value ? Number(e.target.value) : null })}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                    >
-                      <option value="">Aucun</option>
-                      {clients.map((c) => (
-                        <option key={c.id} value={c.id}>{c.name}</option>
-                      ))}
-                    </select>
+                    <div className="flex gap-2">
+                      <select
+                        value={formData.client || ''}
+                        onChange={(e) => setFormData({ ...formData, client: e.target.value ? Number(e.target.value) : null })}
+                        className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                      >
+                        <option value="">Aucun</option>
+                        {clients.map((c) => (
+                          <option key={c.id} value={c.id}>{c.name}</option>
+                        ))}
+                      </select>
+                      <button
+                        type="button"
+                        onClick={() => setShowClientModal(true)}
+                        className="px-3 py-3 bg-primary/10 text-primary rounded-xl hover:bg-primary/20 transition-colors shrink-0"
+                        title="Créer un client"
+                      >
+                        <Plus className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                   <div>
                     <label className="flex items-center gap-2 text-xs font-semibold text-secondary mb-2">
@@ -447,13 +500,18 @@ export default function ProjectsPage() {
                   {/* Existing images */}
                   {existingImages.length > 0 && (
                     <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mb-4">
-                      {existingImages.map((img) => (
-                        <div key={img.id} className="relative group">
+                      {existingImages.map((img, idx) => (
+                        <div key={img.id} className="relative group cursor-pointer" onClick={() => setLightboxIndex(idx)}>
                           <div className={`aspect-square rounded-xl overflow-hidden border-2 transition-all ${
                             img.is_cover ? 'border-primary shadow-md shadow-primary/10' : 'border-gray-100 group-hover:border-gray-200'
                           }`}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img src={img.image} alt={img.caption || 'Project Image'} className="w-full h-full object-cover" />
+                          </div>
+
+                          {/* Zoom indicator */}
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-xl flex items-center justify-center">
+                            <ZoomIn className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow" />
                           </div>
 
                           {/* Cover badge */}
@@ -464,12 +522,12 @@ export default function ProjectsPage() {
                           )}
 
                           {/* Hover actions */}
-                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center gap-2">
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center gap-2 pointer-events-none">
                             {!img.is_cover && (
                               <button
                                 type="button"
-                                onClick={() => handleSetCover(img.id)}
-                                className="p-1.5 bg-white rounded-lg text-secondary hover:bg-primary hover:text-white transition-colors"
+                                onClick={(e) => { e.stopPropagation(); handleSetCover(img.id) }}
+                                className="p-1.5 bg-white rounded-lg text-secondary hover:bg-primary hover:text-white transition-colors pointer-events-auto"
                                 title="Définir comme couverture"
                               >
                                 <Star className="w-3.5 h-3.5" />
@@ -477,8 +535,8 @@ export default function ProjectsPage() {
                             )}
                             <button
                               type="button"
-                              onClick={() => handleDeleteImage(img.id)}
-                              className="p-1.5 bg-white rounded-lg text-red-500 hover:bg-red-500 hover:text-white transition-colors"
+                              onClick={(e) => { e.stopPropagation(); handleDeleteImage(img.id) }}
+                              className="p-1.5 bg-white rounded-lg text-red-500 hover:bg-red-500 hover:text-white transition-colors pointer-events-auto"
                               title="Supprimer"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -518,13 +576,16 @@ export default function ProjectsPage() {
                   {imageFiles.length > 0 && (
                     <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4">
                       {imageFiles.map((file, i) => (
-                        <div key={i} className="relative aspect-square rounded-xl overflow-hidden border-2 border-dashed border-primary/30 bg-primary/[0.02]">
+                        <div key={i} className="relative aspect-square rounded-xl overflow-hidden border-2 border-dashed border-primary/30 bg-primary/[0.02] cursor-pointer" onClick={() => setLightboxIndex(existingImages.length + i)}>
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={URL.createObjectURL(file)}
                             alt={file.name}
                             className="w-full h-full object-cover"
                           />
+                          <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors rounded-xl flex items-center justify-center">
+                            <ZoomIn className="w-5 h-5 text-white opacity-0 hover:opacity-100 transition-opacity drop-shadow" />
+                          </div>
                           <button
                             type="button"
                             onClick={(e) => {
@@ -652,6 +713,166 @@ export default function ProjectsPage() {
           ))}
         </div>
       )}
+
+      {/* Fullscreen lightbox */}
+      <AnimatePresence>
+        {lightboxIndex !== null && allLightboxImages.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center"
+            onClick={() => setLightboxIndex(null)}
+          >
+            <button
+              onClick={() => setLightboxIndex(null)}
+              className="absolute top-4 right-4 p-2 text-white/70 hover:text-white transition-colors z-10"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            {allLightboxImages.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => { e.stopPropagation(); handleLightboxNav('prev') }}
+                  className="absolute left-4 p-2 text-white/70 hover:text-white bg-white/10 rounded-full transition-colors z-10"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); handleLightboxNav('next') }}
+                  className="absolute right-4 p-2 text-white/70 hover:text-white bg-white/10 rounded-full transition-colors z-10"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              </>
+            )}
+
+            <motion.div
+              key={lightboxIndex}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="max-w-[90vw] max-h-[85vh]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={allLightboxImages[lightboxIndex]}
+                alt="Fullscreen"
+                className="max-w-full max-h-[85vh] object-contain rounded-lg"
+              />
+            </motion.div>
+
+            {allLightboxImages.length > 1 && (
+              <div className="absolute bottom-4 text-white/60 text-sm font-medium">
+                {lightboxIndex + 1} / {allLightboxImages.length}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Inline client creation modal */}
+      <AnimatePresence>
+        {showClientModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex items-center justify-center p-4"
+            onClick={() => setShowClientModal(false)}
+          >
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 20, opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              className="bg-white rounded-2xl w-full max-w-md shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between p-5 border-b border-gray-100">
+                <div>
+                  <h3 className="text-base font-bold text-secondary">Nouveau client</h3>
+                  <p className="text-xs text-muted mt-0.5">Ajoutez un client depuis ici</p>
+                </div>
+                <button onClick={() => setShowClientModal(false)} className="p-1.5 rounded-lg hover:bg-gray-100 text-muted transition-colors">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <form onSubmit={handleCreateClient} className="p-5 space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-secondary mb-1.5">Nom *</label>
+                  <input
+                    type="text"
+                    value={clientForm.name}
+                    onChange={(e) => setClientForm({ ...clientForm, name: e.target.value })}
+                    required
+                    className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                    placeholder="Ex: IRT, CENAREST..."
+                    autoFocus
+                  />
+                </div>
+                <div>
+                  <label className="flex items-center gap-1.5 text-xs font-semibold text-secondary mb-1.5">
+                    <Globe className="w-3 h-3 text-muted" />
+                    Site web <span className="text-muted font-normal">(optionnel)</span>
+                  </label>
+                  <input
+                    type="url"
+                    value={clientForm.website}
+                    onChange={(e) => setClientForm({ ...clientForm, website: e.target.value })}
+                    className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                    placeholder="https://..."
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-secondary mb-1.5">Logo</label>
+                  <div className="flex items-center gap-3">
+                    {clientLogoFile && (
+                      <div className="relative">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={URL.createObjectURL(clientLogoFile)} alt="Preview" className="w-12 h-12 object-cover rounded-lg border-2 border-primary/30" />
+                        <button
+                          type="button"
+                          onClick={() => setClientLogoFile(null)}
+                          className="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full shadow-sm flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors"
+                        >
+                          <X className="w-2.5 h-2.5" />
+                        </button>
+                      </div>
+                    )}
+                    <label className="flex items-center gap-1.5 px-3 py-2 border border-gray-200 rounded-lg text-xs text-muted hover:text-secondary hover:border-gray-300 cursor-pointer transition-colors">
+                      <Upload className="w-3.5 h-3.5" />
+                      {clientLogoFile ? 'Changer' : 'Ajouter un logo'}
+                      <input type="file" accept="image/*" className="hidden" onChange={(e) => { if (e.target.files?.[0]) setClientLogoFile(e.target.files[0]) }} />
+                    </label>
+                  </div>
+                </div>
+
+                <div className="flex justify-end gap-2 pt-3 border-t border-gray-100">
+                  <button
+                    type="button"
+                    onClick={() => setShowClientModal(false)}
+                    className="px-4 py-2 text-sm font-medium text-secondary bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors"
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={savingClient || !clientForm.name.trim()}
+                    className="px-4 py-2 text-sm font-medium bg-secondary text-white rounded-xl hover:bg-secondary/90 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {savingClient ? 'Création...' : 'Créer'}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
