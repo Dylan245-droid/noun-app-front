@@ -287,23 +287,21 @@ function PartnersCarousel() {
 
   if (!partners.length) return null
 
-  const shouldAnimate = partners.length >= 3
-  const items = shouldAnimate ? [...partners, ...partners] : partners
+  const items = [...partners, ...partners, ...partners]
 
   return (
     <div
       className="relative overflow-hidden"
-      onMouseEnter={() => shouldAnimate && setPaused(true)}
-      onMouseLeave={() => shouldAnimate && setPaused(false)}
-      onTouchStart={() => shouldAnimate && setPaused(true)}
-      onTouchEnd={() => setTimeout(() => shouldAnimate && setPaused(false), 3000)}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onTouchStart={() => setPaused(true)}
+      onTouchEnd={() => setTimeout(() => setPaused(false), 3000)}
     >
-      <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-white to-transparent z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-white to-transparent z-10" />
-      <motion.div
-        className="flex gap-6"
-        animate={shouldAnimate && !paused ? { x: [0, -1400] } : {}}
-        transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+      <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+      <div
+        className="flex gap-6 partners-scroll"
+        style={{ animationPlayState: paused ? 'paused' : 'running' }}
       >
         {items.map((partner, i) => {
           const content = (
@@ -341,7 +339,7 @@ function PartnersCarousel() {
 
           return <div key={i}>{content}</div>
         })}
-      </motion.div>
+      </div>
     </div>
   )
 }
@@ -383,7 +381,7 @@ function ProjectsCarousel() {
             href={`/portfolio/${p.slug}`}
             className="group flex-shrink-0 w-64 sm:w-80 lg:w-96 block"
           >
-            <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-white/5">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-t-lg bg-white/5 shadow-2xl shadow-black/30">
               {p.cover_image ? (
                 <img
                   src={p.cover_image}
@@ -395,7 +393,7 @@ function ProjectsCarousel() {
                   <span className="text-white/20 text-sm">No image</span>
                 </div>
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-[10px] tracking-[0.2em] uppercase text-white/50">{p.category}</span>
