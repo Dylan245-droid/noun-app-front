@@ -201,7 +201,7 @@ export default function AboutClient({ initialData }: any) {
               <div className="flex items-center gap-3 mb-4"><span className="w-8 h-[1px] bg-primary" /><span className="text-[10px] tracking-[0.3em] uppercase text-muted">{story.label}</span></div>
               <p className="text-2xl font-light text-secondary leading-snug tracking-tight">{story.title}</p>
             </motion.div>
-            {story.paragraphs.map((paragraph: string, i: number) => (
+            {story?.paragraphs?.map((paragraph: string, i: number) => (
               <motion.div
                 key={i}
                 className="px-4 sm:px-6 lg:px-8 py-16 lg:py-20"
@@ -292,7 +292,7 @@ export default function AboutClient({ initialData }: any) {
             </motion.div>
             <div className="md:col-span-8 px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
               <div className="grid sm:grid-cols-2 gap-x-12 gap-y-8">
-                {pillars.architecture.items.map((item: { title: string; desc: string }, i: number) => (
+                {pillars.architecture?.items?.map((item: { title: string; desc: string }, i: number) => (
                   <motion.div
                     key={item.title}
                     initial={{ opacity: 0, y: 20 }}
@@ -328,7 +328,7 @@ export default function AboutClient({ initialData }: any) {
             </motion.div>
             <div className="md:col-span-8 px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
               <div className="grid sm:grid-cols-2 gap-x-12 gap-y-8">
-                {pillars.digital.items.map((item: { title: string; desc: string }, i: number) => (
+                {pillars.digital?.items?.map((item: { title: string; desc: string }, i: number) => (
                   <motion.div
                     key={item.title}
                     initial={{ opacity: 0, y: 20 }}
@@ -369,7 +369,7 @@ export default function AboutClient({ initialData }: any) {
               viewport={{ once: true, margin: '-10%' }}
               transition={{ duration: 0.7, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
             >
-              {vision.quote.split(vision.highlights[0]).map((part: string, i: number) => (
+              {vision.quote?.split(vision.highlights?.[0]).map((part: string, i: number) => (
                 <span key={i}>
                   {part}
                   {i === 0 && vision.highlights[0] && <span className="font-medium text-white">{vision.highlights[0]}</span>}
