@@ -374,15 +374,15 @@ export default function ProjectsPage() {
 
                 {/* Client + Date + Location/Tech */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
+                  <div className="min-w-0">
                     <label className="block text-xs font-semibold text-secondary mb-2">
                       Client
                     </label>
-                    <div className="flex gap-2">
+                    <div className="flex items-center gap-1.5">
                       <select
                         value={formData.client || ''}
                         onChange={(e) => setFormData({ ...formData, client: e.target.value ? Number(e.target.value) : null })}
-                        className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                        className="min-w-0 flex-1 bg-gray-50 border border-gray-200 rounded-xl px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all truncate"
                       >
                         <option value="">Aucun</option>
                         {clients.map((c) => (
@@ -392,7 +392,7 @@ export default function ProjectsPage() {
                       <button
                         type="button"
                         onClick={() => setShowClientModal(true)}
-                        className="px-3 py-3 bg-primary/10 text-primary rounded-xl hover:bg-primary/20 transition-colors shrink-0"
+                        className="shrink-0 w-9 h-9 flex items-center justify-center bg-primary/10 text-primary rounded-xl hover:bg-primary/20 transition-colors"
                         title="Créer un client"
                       >
                         <Plus className="w-4 h-4" />
