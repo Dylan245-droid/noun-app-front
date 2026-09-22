@@ -11,6 +11,8 @@ interface SiteSettings {
   contact_phone: string
   contact_address: string
   site_name?: string
+  instagram_url?: string
+  linkedin_url?: string
 }
 
 export default function Footer() {
@@ -100,8 +102,8 @@ export default function Footer() {
         <div className="border-t border-border-light mt-16 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-secondary/40 text-xs font-medium">
           <p>&copy; {new Date().getFullYear()} {settings?.site_name || 'NOUN CONCEPT'}. {t('footer.rights')}</p>
           <div className="flex gap-6">
-            <a href="https://www.instagram.com/noun.concept" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">Instagram</a>
-            <a href="https://www.linkedin.com/company/noun-concept" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">LinkedIn</a>
+            <a href={settings?.instagram_url || 'https://www.instagram.com/noun.concept'} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">Instagram</a>
+            <a href={settings?.linkedin_url || 'https://www.linkedin.com/company/noun-concept'} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">LinkedIn</a>
           </div>
         </div>
       </div>

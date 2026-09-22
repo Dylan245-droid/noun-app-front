@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Save, Mail, Phone, MapPin, Clock, Building2, BarChart3, Share2 } from 'lucide-react'
+import { Save, Mail, Phone, MapPin, Clock, Building2, BarChart3, Share2, AtSign, Link2 } from 'lucide-react'
 import { fetchApi } from '@/services/api'
 
 interface SiteSettings {
@@ -20,6 +20,8 @@ interface SiteSettings {
   google_site_verification: string
   facebook_app_id: string
   twitter_handle: string
+  instagram_url: string
+  linkedin_url: string
 }
 
 export default function SettingsPage() {
@@ -230,11 +232,40 @@ export default function SettingsPage() {
             </div>
             <div>
               <h2 className="text-sm font-semibold text-secondary">Réseaux sociaux</h2>
-              <p className="text-xs text-muted">Configuration Open Graph & Social</p>
+              <p className="text-xs text-muted">Liens du footer & configuration Open Graph</p>
             </div>
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className="flex items-center gap-2 text-xs font-medium text-secondary mb-2">
+                <AtSign className="w-3.5 h-3.5 text-muted" />
+                Instagram
+              </label>
+              <input
+                type="url"
+                value={settings.instagram_url}
+                onChange={(e) => setSettings({ ...settings, instagram_url: e.target.value })}
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                placeholder="https://www.instagram.com/..."
+              />
+            </div>
+            <div>
+              <label className="flex items-center gap-2 text-xs font-medium text-secondary mb-2">
+                <Link2 className="w-3.5 h-3.5 text-muted" />
+                LinkedIn
+              </label>
+              <input
+                type="url"
+                value={settings.linkedin_url}
+                onChange={(e) => setSettings({ ...settings, linkedin_url: e.target.value })}
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                placeholder="https://www.linkedin.com/company/..."
+              />
+            </div>
+          </div>
+
+          <div className="border-t border-gray-100 pt-5 grid sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-secondary mb-2">Facebook App ID</label>
               <input
