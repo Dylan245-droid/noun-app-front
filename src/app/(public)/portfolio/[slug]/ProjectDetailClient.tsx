@@ -43,8 +43,8 @@ interface Project {
 
 export default function ProjectDetailClient({ initialProject }: { initialProject: any }) {
   const slug = initialProject?.slug
-  const [project, setProject] = useState<Project | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [project, setProject] = useState<Project | null>(initialProject ?? null)
+  const [loading, setLoading] = useState(!initialProject)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const heroRef = useRef<HTMLDivElement>(null)
@@ -54,23 +54,14 @@ export default function ProjectDetailClient({ initialProject }: { initialProject
     useHeaderTheme('dark')
 
   useEffect(() => {
-    if (!slug) return
+    if (!slug || initialProject) return
     fetchApi(`/portfolio/projects/${slug}/`)
       .then((data) => {
         setProject(data)
-        setMeta({
-          title: `${data.title} — NOUN CONCEPT`,
-          description: data.short_description,
-          keywords: `${data.category}, ${data.location || ''}, ${data.technologies || ''}, projet ${data.category}`,
-          ogTitle: data.title,
-          ogDescription: data.short_description,
-          ogImage: data.images?.find((i: ProjectImage) => i.is_cover)?.image || data.cover_image || data.images?.[0]?.image || null,
-          canonicalUrl: `/portfolio/${data.slug}`,
-        })
       })
       .catch(() => setProject(null))
       .finally(() => setLoading(false))
-  }, [slug])
+  }, [slug, initialProject])
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index)
@@ -414,8 +405,5 @@ export default function ProjectDetailClient({ initialProject }: { initialProject
       </AnimatePresence>
     </div>
   )
-}
-function setMeta(arg0: { title: string; description: any; keywords: string; ogTitle: any; ogDescription: any; ogImage: any; canonicalUrl: string }) {
-  throw new Error('Function not implemented.')
 }
 
