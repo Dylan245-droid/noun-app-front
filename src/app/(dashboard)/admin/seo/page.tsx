@@ -33,6 +33,7 @@ const defaultValues: Record<string, Partial<PageSEO>> = {
   portfolio: { title: 'Portfolio & Réalisations — NOUN CONCEPT | Architecture & Digital', title_en: 'Portfolio & Projects — NOUN CONCEPT | Architecture & Digital', meta_description: "Découvrez nos réalisations en architecture et digital. Chaque projet, une histoire.", meta_description_en: 'Discover our architecture and digital projects. Every project, a story.', og_title: 'Portfolio — NOUN CONCEPT', og_title_en: 'Portfolio — NOUN CONCEPT', og_description: 'Nos projets et réalisations', og_description_en: 'Our projects and work' },
   about: { title: 'À Propos de NOUN CONCEPT — Notre Histoire & Notre Équipe', title_en: 'About NOUN CONCEPT — Our Story & Team', meta_description: 'Fondée par Claude François EMANE MENGUE et Dylan ONDO, NOUN CONCEPT allie architecture et digital. Découvrez notre vision, notre équipe et nos valeurs.', meta_description_en: 'Founded by Claude François EMANE MENGUE and Dylan ONDO, NOUN CONCEPT combines architecture and digital. Discover our vision, team and values.', og_title: 'À propos — NOUN CONCEPT', og_title_en: 'About — NOUN CONCEPT', og_description: 'Notre histoire, notre équipe', og_description_en: 'Our story, our team' },
   contact: { title: 'Contact — NOUN CONCEPT | Libreville, Gabon', title_en: 'Contact — NOUN CONCEPT | Libreville, Gabon', meta_description: "Contactez NOUN CONCEPT pour vos projets d'architecture, design ou solutions digitales. Email, téléphone ou formulaire. Basé à Libreville, Gabon.", meta_description_en: 'Contact NOUN CONCEPT for your architecture, design or digital projects. Email, phone or form. Based in Libreville, Gabon.', og_title: 'Contact — NOUN CONCEPT', og_title_en: 'Contact — NOUN CONCEPT', og_description: 'Prenez contact avec nous', og_description_en: 'Get in touch with us' },
+  configurateur: { title: 'Configurateur 3D — Aménagez votre espace | NOUN CONCEPT', title_en: '3D Configurator — Design your space | NOUN CONCEPT', meta_description: "Imaginez votre intérieur en 3D : choisissez une pièce, placez des meubles et testez la stabilité. Envoyez votre projet à NOUN CONCEPT.", meta_description_en: 'Design your interior in 3D: pick a room, place furniture and test stability. Send your project to NOUN CONCEPT.', og_title: 'Configurateur 3D — NOUN CONCEPT', og_title_en: '3D Configurator — NOUN CONCEPT', og_description: "Concevez votre intérieur en 3D et testez la stabilité de votre aménagement.", og_description_en: 'Design your interior in 3D and test your layout stability.' },
 }
 
 export default function SEOPage() {
@@ -162,6 +163,7 @@ export default function SEOPage() {
     { key: 'portfolio', label: 'Portfolio' },
     { key: 'about', label: 'À propos' },
     { key: 'contact', label: 'Contact' },
+    { key: 'configurateur', label: 'Configurateur' },
   ]
 
   if (loading) return <p className="text-muted">Chargement...</p>

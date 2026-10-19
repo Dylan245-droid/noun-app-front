@@ -1,11 +1,25 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, Calendar, Code, ExternalLink, Building2, ArrowRight, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { useHeaderTheme } from '@/hooks/useHeaderTheme'
 import { fetchApi } from '@/services/api'
+import { physicsApi } from '@/services/physics'
+import { buildObjects } from '@/components/physics/SceneCanvas'
+
+const SceneCanvas = dynamic(
+  () => import('@/components/physics/SceneCanvas').then((m) => m.SceneCanvas),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex items-center justify-center h-full">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    ),
+  },
+)
 
 interface ProjectImage {
   id: number
@@ -38,6 +52,7 @@ interface Project {
   technologies: string
   project_url: string
   images: ProjectImage[]
+  scene_slug?: string | null
   created_at: string
 }
 
@@ -47,6 +62,8 @@ export default function ProjectDetailClient({ initialProject }: { initialProject
   const [loading, setLoading] = useState(!initialProject)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [viewerObjects, setViewerObjects] = useState<any[] | null>(null)
   const heroRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
   const heroOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0])
@@ -62,6 +79,30 @@ export default function ProjectDetailClient({ initialProject }: { initialProject
       .catch(() => setProject(null))
       .finally(() => setLoading(false))
   }, [slug, initialProject])
+
+  useEffect(() => {
+    const sceneSlug = project?.scene_slug
+    const projectSlug = project?.slug
+    if (!sceneSlug || !projectSlug) return
+    let cancelled = false
+    physicsApi
+      .getProjectViewer(projectSlug)
+      .then((payload) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const snapshot: any[] = payload.simulation?.objects_snapshot || []
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const infoByRef = new Map(snapshot.map((it: any) => [it.ref, it]))
+        if (!cancelled) {
+          setViewerObjects(buildObjects(payload.frames || [], infoByRef))
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setViewerObjects([])
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [project?.scene_slug, project?.slug])
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index)
@@ -325,6 +366,36 @@ export default function ProjectDetailClient({ initialProject }: { initialProject
                 </motion.button>
               ))}
             </div>
+          </div>
+        </section>
+      )}
+
+      {/* Visite 3D interactive */}
+      {viewerObjects && viewerObjects.length > 0 && (
+        <section className="bg-secondary border-t border-white/5">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <span className="w-8 h-[1px] bg-white/30" />
+                <span className="text-[10px] tracking-[0.3em] uppercase text-white/40">
+                  Visite 3D interactive
+                </span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-8">
+                Explorez l&apos;espace
+              </h2>
+            </motion.div>
+            <div className="h-[560px] rounded-2xl overflow-hidden bg-white/5 border border-white/10">
+              <SceneCanvas objects={viewerObjects} footerLabel="Explorez avec la souris" />
+            </div>
+            <p className="text-white/35 text-xs mt-4">
+              Déplacez la caméra à la souris. L&apos;aménagement est simulé physiquement (gravité, collisions).
+            </p>
           </div>
         </section>
       )}

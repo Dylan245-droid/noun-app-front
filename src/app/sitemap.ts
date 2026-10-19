@@ -6,8 +6,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Fetch dynamic projects
   let projects: any[] = []
+  const apiBase = process.env.BACKEND_URL || 'http://127.0.0.1:8031'
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8031/api'}/portfolio/projects/published/`, { next: { revalidate: 3600 } })
+    const res = await fetch(`${apiBase}/api/portfolio/projects/published/`, { next: { revalidate: 3600 } })
     if (res.ok) {
       const data = await res.json()
       projects = data.results || data || []
@@ -59,6 +60,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/configurateur`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
     },
     ...projectUrls,
   ]

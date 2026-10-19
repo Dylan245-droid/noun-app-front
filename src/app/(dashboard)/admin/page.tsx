@@ -268,7 +268,7 @@ export default function DashboardPage() {
           </div>
           <Link href="/admin/seo" className="text-xs text-primary hover:underline">Configurer</Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-x divide-gray-50">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 divide-x divide-gray-50">
           {[
             { page: 'Accueil', slug: 'home' },
             { page: 'Architecture', slug: 'architecture' },
@@ -276,6 +276,7 @@ export default function DashboardPage() {
             { page: 'Portfolio', slug: 'portfolio' },
             { page: 'À propos', slug: 'about' },
             { page: 'Contact', slug: 'contact' },
+            { page: 'Configurateur', slug: 'configurateur' },
           ].map((p) => {
             const configured = stats.seoPages > 0
             return (

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Edit2, X, FileText, Save, Layout, ChevronDown, ChevronRight, Image as ImageIcon, Home, Building2, Monitor, Image, Users, Phone, FilePlus } from 'lucide-react'
+import { Edit2, X, FileText, Save, Layout, ChevronDown, ChevronRight, Image as ImageIcon, Home, Building2, Monitor, Image, Users, Phone, FilePlus, Boxes } from 'lucide-react'
 import { fetchApi } from '@/services/api'
 
 const PAGE_TYPES = [
@@ -12,6 +12,7 @@ const PAGE_TYPES = [
   { value: 'portfolio', label: 'Portfolio' },
   { value: 'about', label: 'À propos' },
   { value: 'contact', label: 'Contact' },
+  { value: 'configurateur', label: 'Configurateur' },
   { value: 'custom', label: 'Page personnalisée' },
 ]
 
@@ -22,6 +23,7 @@ const PAGE_ICONS: Record<string, typeof Home> = {
   portfolio: Image,
   about: Users,
   contact: Phone,
+  configurateur: Boxes,
   custom: FilePlus,
 }
 
@@ -32,6 +34,7 @@ const PAGE_COLORS: Record<string, string> = {
   portfolio: 'from-purple-500/20 to-purple-500/5',
   about: 'from-blue-500/20 to-blue-500/5',
   contact: 'from-rose-500/20 to-rose-500/5',
+  configurateur: 'from-indigo-500/20 to-indigo-500/5',
   custom: 'from-gray-400/20 to-gray-400/5',
 }
 
@@ -41,6 +44,7 @@ const DEFAULT_HERO_IMAGES: Record<string, string> = {
   portfolio: '/diapo3.jpg',
   about: '/diapo2.jpg',
   contact: '/diapo6.jpg',
+  configurateur: '/diapo6.jpg',
 }
 
 interface DynamicPage {
@@ -764,6 +768,89 @@ export default function PagesPage() {
                       </div>
                       <p className="text-[10px] text-muted mt-3">Le formulaire et les coordonnées sont gérés automatiquement depuis les paramètres du site (/admin/settings).</p>
                     </Section>
+                  )}
+
+                  {/* ====== CONFIGURATEUR ====== */}
+                  {formData.page_type === 'configurateur' && (
+                    <>
+                      <Section title="Hero">
+                        <div className="grid sm:grid-cols-3 gap-4">
+                          <Field label={`Label (${lang})`}><input type="text" value={getNested('hero.label')} onChange={(e) => setNested('hero.label', e.target.value)} className={inputCls} /></Field>
+                          <div className="sm:col-span-2"><Field label={`Titre (${lang})`}><input type="text" value={getNested('hero.title')} onChange={(e) => setNested('hero.title', e.target.value)} className={inputCls} /></Field></div>
+                        </div>
+                        <Field label={`Sous-titre (${lang})`}><input type="text" value={getNested('hero.subtitle')} onChange={(e) => setNested('hero.subtitle', e.target.value)} className={inputCls} /></Field>
+                        <div className="pt-2 border-t border-gray-100">
+                          <Field label="Image Hero">
+                            <div className="flex items-start gap-3">
+                              <div className="flex-1">
+                                <input type="text" value={getNested('hero.image') || editing?.hero_image || DEFAULT_HERO_IMAGES.configurateur || ''} onChange={(e) => setNested('hero.image', e.target.value)} className={`${inputCls} font-mono text-xs`} placeholder="/diapo6.jpg ou URL externe" />
+                              </div>
+                              <label className="shrink-0 inline-flex items-center gap-2 px-3 py-2.5 bg-primary/10 text-primary text-xs font-medium rounded-lg cursor-pointer hover:bg-primary/20 transition-colors">
+                                <ImageIcon className="w-4 h-4" />
+                                <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                                  const files = e.target.files
+                                  if (!files || files.length === 0) return
+                                  const fd = new FormData()
+                                  Array.from(files).forEach((f) => fd.append('images', f))
+                                  try {
+                                    const data = await fetchApi('/pages/upload_images/', { method: 'POST', body: fd })
+                                    if (data.urls?.[0]) setNested('hero.image', data.urls[0])
+                                  } catch (err) { console.error('Upload failed:', err) }
+                                }} />
+                              </label>
+                            </div>
+                          </Field>
+                          {(getNested('hero.image') || editing?.hero_image || DEFAULT_HERO_IMAGES.configurateur) && (
+                            <div className="mt-2 relative w-full aspect-[2/1] max-w-xs rounded-xl overflow-hidden border border-gray-200 group">
+                              <img src={getNested('hero.image') || editing?.hero_image || DEFAULT_HERO_IMAGES.configurateur} alt="Hero" className="w-full h-full object-cover" />
+                              {getNested('hero.image') && (
+                                <button type="button" onClick={() => setNested('hero.image', '')} className="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-sm opacity-0 group-hover:opacity-100 transition-opacity">×</button>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </Section>
+
+                      <Section title="Introduction">
+                        <div className="grid sm:grid-cols-3 gap-4">
+                          <Field label={`Label (${lang})`}><input type="text" value={getNested('intro.label')} onChange={(e) => setNested('intro.label', e.target.value)} className={inputCls} /></Field>
+                          <div className="sm:col-span-2"><Field label={`Titre (${lang})`}><textarea value={getNested('intro.title')} onChange={(e) => setNested('intro.title', e.target.value)} rows={2} className={textareaCls(2)} /></Field></div>
+                        </div>
+                        <Field label={`Sous-titre (${lang})`}><input type="text" value={getNested('intro.subtitle')} onChange={(e) => setNested('intro.subtitle', e.target.value)} className={inputCls} /></Field>
+                      </Section>
+
+                      <Section title="Libellés des sections">
+                        <div className="grid sm:grid-cols-2 gap-4">
+                          <Field label={`Pièce (${lang})`}><input type="text" value={getNested('sections.rooms')} onChange={(e) => setNested('sections.rooms', e.target.value)} className={inputCls} /></Field>
+                          <Field label={`Catalogue (${lang})`}><input type="text" value={getNested('sections.catalog')} onChange={(e) => setNested('sections.catalog', e.target.value)} className={inputCls} /></Field>
+                          <Field label={`Aménagement (${lang})`}><input type="text" value={getNested('sections.editor')} onChange={(e) => setNested('sections.editor', e.target.value)} className={inputCls} /></Field>
+                          <Field label={`Contact (${lang})`}><input type="text" value={getNested('sections.contact')} onChange={(e) => setNested('sections.contact', e.target.value)} className={inputCls} /></Field>
+                        </div>
+                      </Section>
+
+                      <Section title="Formulaire d'envoi">
+                        <div className="grid sm:grid-cols-2 gap-4">
+                          <Field label={`Titre (${lang})`}><input type="text" value={getNested('form.title')} onChange={(e) => setNested('form.title', e.target.value)} className={inputCls} /></Field>
+                          <Field label={`Sous-titre (${lang})`}><input type="text" value={getNested('form.subtitle')} onChange={(e) => setNested('form.subtitle', e.target.value)} className={inputCls} /></Field>
+                          <Field label={`Champ nom (${lang})`}><input type="text" value={getNested('form.name')} onChange={(e) => setNested('form.name', e.target.value)} className={inputCls} /></Field>
+                          <Field label={`Champ email (${lang})`}><input type="text" value={getNested('form.email')} onChange={(e) => setNested('form.email', e.target.value)} className={inputCls} /></Field>
+                          <Field label={`Champ téléphone (${lang})`}><input type="text" value={getNested('form.phone')} onChange={(e) => setNested('form.phone', e.target.value)} className={inputCls} /></Field>
+                          <Field label={`Champ message (${lang})`}><input type="text" value={getNested('form.message')} onChange={(e) => setNested('form.message', e.target.value)} className={inputCls} /></Field>
+                          <Field label={`Bouton (${lang})`}><input type="text" value={getNested('form.submit')} onChange={(e) => setNested('form.submit', e.target.value)} className={inputCls} /></Field>
+                          <Field label={`Message de succès (${lang})`}><input type="text" value={getNested('form.success')} onChange={(e) => setNested('form.success', e.target.value)} className={inputCls} /></Field>
+                        </div>
+                      </Section>
+
+                      <Section title="Boutons de l'éditeur">
+                        <div className="grid sm:grid-cols-3 gap-4">
+                          {['test', 'reset', 'add', 'delete', 'move', 'rotate', 'back', 'searching'].map((key) => (
+                            <Field key={key} label={`${key} (${lang})`}>
+                              <input type="text" value={getNested(`actions.${key}`)} onChange={(e) => setNested(`actions.${key}`, e.target.value)} className={inputCls} />
+                            </Field>
+                          ))}
+                        </div>
+                      </Section>
+                    </>
                   )}
                 </div>
 

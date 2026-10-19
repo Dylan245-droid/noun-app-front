@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { LayoutDashboard, FolderOpen, Users, Mail, UserCircle, LogOut, Menu, X, ExternalLink, ChevronDown, Settings, FileText, Search, Briefcase } from 'lucide-react'
+import { LayoutDashboard, FolderOpen, Users, Mail, UserCircle, LogOut, Menu, X, ExternalLink, ChevronDown, Settings, FileText, Search, Briefcase, Package, Boxes, Building2 } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import logo from '/logo.png'
 
@@ -17,6 +17,9 @@ const navItems = [
   { label: 'Équipe', href: '/admin/team', icon: UserCircle },
   { label: 'Pages CMS', href: '/admin/pages', icon: FileText },
   { label: 'SEO', href: '/admin/seo', icon: Search },
+  { label: 'Catalogue 3D', href: '/admin/catalog', icon: Package },
+  { label: 'Projets 3D', href: '/admin/buildings', icon: Building2 },
+  { label: 'Simulation', href: '/simulation', icon: Boxes },
   { label: 'Paramètres', href: '/admin/settings', icon: Settings },
 ]
 

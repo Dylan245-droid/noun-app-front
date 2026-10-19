@@ -53,6 +53,7 @@ export default function Header() {
     { label: t('nav.architecture'), href: '/architecture' },
     { label: t('nav.digital'), href: '/digital' },
     { label: t('nav.portfolio'), href: '/portfolio' },
+    { label: i18n.language === 'en' ? 'Configurator' : 'Configurateur', href: '/configurateur' },
     { label: t('nav.about'), href: '/about' },
     { label: t('nav.contact'), href: '/contact' },
     ...navPages.map((p) => ({ label: p.nav_label || p.title, href: `/p/${p.slug}` })),

@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Edit2, Trash2, X, Upload, Image as ImageIcon, Eye, EyeOff, Calendar, MapPin, Code, Star, Link as LinkIcon, ZoomIn, ChevronLeft, ChevronRight, Globe } from 'lucide-react'
+import { Plus, Edit2, Trash2, X, Upload, Image as ImageIcon, Eye, EyeOff, Calendar, MapPin, Code, Star, Link as LinkIcon, ZoomIn, ChevronLeft, ChevronRight, Globe, Boxes } from 'lucide-react'
 import Link from 'next/link'
 import { fetchApi } from '@/services/api'
+import { physicsApi } from '@/services/physics'
 
 interface Client {
   id: number
@@ -49,6 +50,7 @@ interface Project {
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([])
   const [clients, setClients] = useState<Client[]>([])
+  const [scenes, setScenes] = useState<{ id: number; slug: string; title: string }[]>([])
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState<Project | null>(null)
   const [showForm, setShowForm] = useState(false)
@@ -71,6 +73,7 @@ export default function ProjectsPage() {
     technologies: '',
     technologies_en: '',
     project_url: '',
+    scene: null as number | null,
   })
   const [imageFiles, setImageFiles] = useState<File[]>([])
   const [existingImages, setExistingImages] = useState<ProjectImage[]>([])
@@ -105,9 +108,19 @@ export default function ProjectsPage() {
     }
   }
 
+  const fetchScenes = async () => {
+    try {
+      const data = await physicsApi.getScenes()
+      setScenes(Array.isArray(data) ? data : data.results || [])
+    } catch {
+      // Fallback
+    }
+  }
+
   useEffect(() => {
     fetchProjects()
     fetchClients()
+    fetchScenes()
   }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -178,6 +191,7 @@ export default function ProjectsPage() {
         technologies: data.technologies || '',
         technologies_en: data.technologies_en || '',
         project_url: data.project_url || '',
+        scene: data.scene || null,
       })
       setLangTab('fr')
       setShowForm(true)
@@ -198,6 +212,7 @@ export default function ProjectsPage() {
       client: null, client_name_override: '', delivery_date: '',
       location: '', location_en: '', technologies: '', technologies_en: '',
       project_url: '',
+      scene: null,
     })
     setImageFiles([])
   }
@@ -449,6 +464,27 @@ export default function ProjectsPage() {
                     className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                     placeholder="https://..."
                   />
+                </div>
+
+                {/* Scène 3D */}
+                <div>
+                  <label className="flex items-center gap-2 text-xs font-semibold text-secondary mb-2">
+                    <Boxes className="w-3.5 h-3.5 text-muted" />
+                    Scène 3D <span className="text-muted font-normal">(vitrine, optionnel)</span>
+                  </label>
+                  <select
+                    value={formData.scene || ''}
+                    onChange={(e) => setFormData({ ...formData, scene: e.target.value ? Number(e.target.value) : null })}
+                    className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  >
+                    <option value="">Aucune</option>
+                    {scenes.map((s) => (
+                      <option key={s.id} value={s.id}>{s.title}</option>
+                    ))}
+                  </select>
+                  <p className="text-[11px] text-muted mt-1">
+                    Affiche une visite 3D interactive sur la page publique du projet.
+                  </p>
                 </div>
 
                 {/* Status + Featured */}
