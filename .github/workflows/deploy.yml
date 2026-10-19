@@ -64,10 +64,11 @@ jobs:
           port: ${{ secrets.PROD_SSH_PORT || 22 }}
           envs: GITHUB_TOKEN,GITHUB_ACTOR
           script: |
-            cd /home/genese_estivale/apps/noun-app-front
+            cd /home/genese_estivale/apps/noun-app/frontend
             echo "=== Syncing Git repository ==="
             git remote set-url origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/Dylan245-droid/noun-app-front.git
-            git pull origin main
+            git fetch origin main
+            git checkout -B main origin/main
             git remote set-url origin https://github.com/Dylan245-droid/noun-app-front.git
             echo "=== Authenticating with GHCR ==="
             echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
