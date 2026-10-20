@@ -132,7 +132,7 @@ function roomsFromTemplate(t: Template): RoomState[] {
 }
 
 export default function ConfigurateurClient() {
-  const { i18n } = useTranslation()
+  const { t, i18n } = useTranslation()
   useHeaderTheme('dark')
   const { data } = usePageContent('configurateur')
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -481,9 +481,7 @@ export default function ConfigurateurClient() {
         label={hero.label || 'Configurateur 3D'}
         title={hero.title || 'Aménagez votre espace'}
         subtitle={hero.subtitle}
-        showGrid
-        scrollLabel={isEn ? 'SCROLL' : 'DÉFILER'}
-        height="h-[85vh]"
+        scrollLabel={t('common.scroll')}
       />
 
       {/* Intro + templates */}
