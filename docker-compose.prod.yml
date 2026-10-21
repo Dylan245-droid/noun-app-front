@@ -7,7 +7,7 @@ services:
     environment:
       PORT: "8000"
       HOSTNAME: "0.0.0.0"
-      BACKEND_URL: "http://noun_backend:8000"
+      BACKEND_URL: "http://backend:8000"
       NEXT_PUBLIC_API_URL: "/api"
     networks:
       - noun-edge
