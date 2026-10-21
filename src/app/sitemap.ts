@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
-import { publicApi } from '@/services/api'
+
+export const dynamic = 'force-dynamic'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://nounconcept.com'
