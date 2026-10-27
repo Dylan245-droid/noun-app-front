@@ -12,8 +12,8 @@ i18n
         translation: {
           nav: {
             home: 'Accueil',
-            architecture: 'Architecture',
-            digital: 'Digital',
+            architecture: 'Design Espace',
+            digital: 'Design Digital',
             portfolio: 'Portfolio',
             about: 'À propos',
             contact: 'Contact',
@@ -21,8 +21,8 @@ i18n
           footer: {
             tagline: 'Concevoir l\'espace. Coder l\'avenir.',
             poles: 'Pôles',
-            architecture: 'Architecture',
-            digital: 'Digital',
+            architecture: 'Design Espace',
+            digital: 'Design Digital',
             company: 'Entreprise',
             about: 'À propos',
             portfolio: 'Portfolio',
@@ -54,18 +54,18 @@ i18n
               highlight1: "l'espace.",
               line2: 'Coder',
               highlight2: "l'avenir.",
-              subtitle: "Design d'espace, aménagement paysager & urbain.\nDéveloppement logiciel et solutions digitales sur mesure.",
+              subtitle: "Design Espace — architecture intérieure, aménagement paysager & urbain.\nDesign Digital — applications web, plateformes & solutions logicielles sur mesure.",
             },
             manifesto: {
               label: 'Notre vision',
             },
             poles: {
               architecture: {
-                title: 'Architecture',
+                title: 'Design Espace',
                 desc: "Aménagement paysager & urbain, mobiliers, œuvres d'art.",
               },
               digital: {
-                title: 'Digital',
+                title: 'Design Digital',
                 desc: 'Applications web, plateformes, consulting technique.',
               },
             },
@@ -86,9 +86,9 @@ i18n
           },
           architecture: {
             hero: {
-              label: 'Architecture',
+              label: 'Design Espace',
               title: "Design d'espace, aménagement & art",
-              subtitle: "Nous concevons des espaces qui inspirent, des aménagements qui durent et des œuvres qui parlent.",
+              subtitle: "Architecture, aménagement & design d'intérieur — du concept à la réalisation.",
             },
             section: {
               label: 'Nos services',
@@ -102,9 +102,9 @@ i18n
           },
           digital: {
             hero: {
-              label: 'Digital',
+              label: 'Design Digital',
               title: 'Solutions digitales sur mesure',
-              subtitle: 'Ingénierie logicielle de qualité, du concept au déploiement.',
+              subtitle: 'Applications web, plateformes & solutions logicielles sur mesure.',
             },
             section: {
               label: 'Nos services',
@@ -124,8 +124,8 @@ i18n
             },
             filters: {
               all: 'Tous',
-              architecture: 'Architecture',
-              digital: 'Digital',
+              architecture: 'Design Espace',
+              digital: 'Design Digital',
             },
             cta: {
               title: 'Un projet en tête ?',
@@ -137,7 +137,7 @@ i18n
             hero: {
               label: 'À propos',
               title: 'Deux univers, une vision',
-              subtitle: 'Architecture et code, espace physique et digital — tout est question de conception.',
+              subtitle: 'Design Espace et Design Digital — tout est question de conception.',
             },
             story: {
               label: 'Notre histoire',
@@ -146,11 +146,11 @@ i18n
             pillars: {
               label: 'Ce que nous faisons',
               architecture: {
-                title: 'Architecture & Design',
+                title: 'Design Espace',
                 subtitle: "De l'espace intérieur au paysage urbain, chaque projet est une sculpture habitable.",
               },
               digital: {
-                title: 'Digital & Logiciel',
+                title: 'Design Digital',
                 subtitle: 'Des systèmes robustes et des interfaces élégantes qui résolvent de vrais problèmes.',
               },
             },
@@ -199,8 +199,8 @@ i18n
         translation: {
           nav: {
             home: 'Home',
-            architecture: 'Architecture',
-            digital: 'Digital',
+            architecture: 'Space Design',
+            digital: 'Digital Design',
             portfolio: 'Portfolio',
             about: 'About',
             contact: 'Contact',
@@ -208,8 +208,8 @@ i18n
           footer: {
             tagline: 'Designing space. Coding the future.',
             poles: 'Poles',
-            architecture: 'Architecture',
-            digital: 'Digital',
+            architecture: 'Space Design',
+            digital: 'Digital Design',
             company: 'Company',
             about: 'About',
             portfolio: 'Portfolio',
@@ -241,18 +241,18 @@ i18n
               highlight1: 'space.',
               line2: 'Code',
               highlight2: 'the future.',
-              subtitle: 'Space design, landscape & urban planning.\nCustom software development and digital solutions.',
+              subtitle: 'Space Design — interior architecture, landscape & urban planning.\nDigital Design — web apps, platforms & custom software.',
             },
             manifesto: {
               label: 'Our vision',
             },
             poles: {
               architecture: {
-                title: 'Architecture',
+                title: 'Space Design',
                 desc: 'Landscape & urban planning, furniture, artworks.',
               },
               digital: {
-                title: 'Digital',
+                title: 'Digital Design',
                 desc: 'Web apps, platforms, technical consulting.',
               },
             },
@@ -273,9 +273,9 @@ i18n
           },
           architecture: {
             hero: {
-              label: 'Architecture',
+              label: 'Space Design',
               title: 'Space design, planning & art',
-              subtitle: 'We design spaces that inspire, developments that last and works that speak.',
+              subtitle: 'Architecture, planning & interior design — from concept to completion.',
             },
             section: {
               label: 'Our services',
@@ -289,9 +289,9 @@ i18n
           },
           digital: {
             hero: {
-              label: 'Digital',
+              label: 'Digital Design',
               title: 'Custom digital solutions',
-              subtitle: 'Quality software engineering, from concept to deployment.',
+              subtitle: 'Web apps, platforms & custom software solutions.',
             },
             section: {
               label: 'Our services',
@@ -311,8 +311,8 @@ i18n
             },
             filters: {
               all: 'All',
-              architecture: 'Architecture',
-              digital: 'Digital',
+              architecture: 'Space Design',
+              digital: 'Digital Design',
             },
             cta: {
               title: 'A project in mind?',
@@ -324,7 +324,7 @@ i18n
             hero: {
               label: 'About',
               title: 'Two worlds, one vision',
-              subtitle: 'Architecture and code, physical space and digital — it\'s all about design.',
+              subtitle: 'Space Design and Digital Design — it\'s all about design.',
             },
             story: {
               label: 'Our story',
@@ -333,11 +333,11 @@ i18n
             pillars: {
               label: 'What we do',
               architecture: {
-                title: 'Architecture & Design',
+                title: 'Space Design',
                 subtitle: 'From interior to urban landscape, every project is a habitable sculpture.',
               },
               digital: {
-                title: 'Digital & Software',
+                title: 'Digital Design',
                 subtitle: 'Robust systems and elegant interfaces that solve real problems.',
               },
             },

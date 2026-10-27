@@ -6,7 +6,7 @@ import { getSeoMetadata } from '@/lib/seo'
 import JsonLd from '@/components/seo/JsonLd'
 
 export async function generateMetadata(): Promise<Metadata> {
-  return getSeoMetadata('digital', 'Digital | Noun Concept', 'Nos services et réalisations en digital.')
+  return getSeoMetadata('digital', 'Design Digital | Noun Concept', 'Applications web, plateformes & solutions logicielles sur mesure.')
 }
 
 export default async function DigitalPage() {
@@ -38,7 +38,7 @@ export default async function DigitalPage() {
   const serviceSchema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    serviceType: 'Développement Web & Stratégie Digitale',
+    serviceType: 'Design Digital & Développement Logiciel',
     provider: {
       '@type': 'Organization',
       name: 'NOUN CONCEPT'

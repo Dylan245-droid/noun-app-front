@@ -19,12 +19,12 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://nounconcept.com'),
   title: {
     template: '%s | NOUN CONCEPT',
-    default: 'NOUN CONCEPT - Architecture & Digital',
+    default: 'NOUN CONCEPT - Design Espace & Design Digital',
   },
-  description: 'Studio de design pluridisciplinaire basé à Libreville. Aménagement intérieur, design urbain, art, et conception d\'applications web et mobiles.',
+  description: 'Studio de design pluridisciplinaire basé à Libreville. Design d\'espace, aménagement paysager & urbain, et design digital : applications web et mobiles sur mesure.',
   openGraph: {
-    title: 'NOUN CONCEPT - Architecture & Digital',
-    description: 'Studio de design pluridisciplinaire basé à Libreville. Aménagement intérieur, design urbain, art, et conception d\'applications web et mobiles.',
+    title: 'NOUN CONCEPT - Design Espace & Design Digital',
+    description: 'Studio de design pluridisciplinaire basé à Libreville. Design d\'espace, aménagement paysager & urbain, et design digital : applications web et mobiles sur mesure.',
     url: 'https://nounconcept.com',
     siteName: 'NOUN CONCEPT',
     images: [
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
         url: 'https://nounconcept.com/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'NOUN CONCEPT - Architecture & Digital',
+        alt: 'NOUN CONCEPT - Design Espace & Design Digital',
       },
     ],
     locale: 'fr_FR',

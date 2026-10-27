@@ -20,8 +20,8 @@ interface Service {
 }
 
 const CATEGORIES = [
-  { value: 'architecture', label: 'Architecture' },
-  { value: 'digital', label: 'Digital' },
+  { value: 'architecture', label: 'Design Espace' },
+  { value: 'digital', label: 'Design Digital' },
 ]
 
 export default function ServicesPage() {
@@ -144,18 +144,18 @@ export default function ServicesPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-secondary tracking-tight">Services</h1>
-          <p className="text-muted text-sm mt-1">Gérez les services Architecture et Digital</p>
+          <p className="text-muted text-sm mt-1">Gérez les services Design Espace et Design Digital</p>
         </div>
         <button onClick={() => setShowForm(true)} className="inline-flex items-center gap-2 px-4 py-2.5 bg-secondary text-white text-sm font-medium rounded-xl hover:bg-secondary/90 active:scale-[0.98] transition-all">
           <Plus className="w-4 h-4" /> Nouveau service
         </button>
       </div>
 
-      {/* Architecture services */}
+      {/* Design Espace services */}
       <div className="mb-8">
         <h2 className="text-sm font-semibold text-secondary mb-4 flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-primary" />
-          Architecture ({archServices.length})
+          Design Espace ({archServices.length})
         </h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {archServices.map((service, i) => (
@@ -188,7 +188,7 @@ export default function ServicesPage() {
       <div className="mb-8">
         <h2 className="text-sm font-semibold text-secondary mb-4 flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-emerald-500" />
-          Digital ({digitalServices.length})
+          Design Digital ({digitalServices.length})
         </h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {digitalServices.map((service, i) => (

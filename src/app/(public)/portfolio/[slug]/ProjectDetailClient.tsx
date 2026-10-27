@@ -181,7 +181,7 @@ export default function ProjectDetailClient({ initialProject }: { initialProject
               <span className={`px-3 py-1 text-[10px] tracking-[0.2em] uppercase font-semibold rounded-md ${
                 project.category === 'architecture' ? 'bg-primary/20 text-primary-light' : 'bg-emerald-500/20 text-emerald-400'
               }`}>
-                {project.category === 'architecture' ? 'Architecture' : 'Digital'}
+                {project.category === 'architecture' ? 'Design Espace' : 'Design Digital'}
               </span>
               {project.location && (
                 <span className="text-white/40 text-xs">{project.location}</span>

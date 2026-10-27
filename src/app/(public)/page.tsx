@@ -23,7 +23,7 @@ async function fetchHomeData() {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  return getSeoMetadata('home', 'NOUN CONCEPT — Architecture & Digital', "Design d'espace, aménagement paysager & urbain. Développement logiciel et solutions digitales sur mesure.")
+  return getSeoMetadata('home', 'NOUN CONCEPT — Design Espace & Design Digital à Libreville', "Design Espace : architecture intérieure, aménagement paysager & urbain. Design Digital : applications web et solutions logicielles sur mesure.")
 }
 
 export default async function Page() {

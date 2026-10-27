@@ -7,8 +7,8 @@ import { fetchApi } from '@/services/api'
 
 const PAGE_TYPES = [
   { value: 'home', label: 'Accueil' },
-  { value: 'architecture', label: 'Architecture' },
-  { value: 'digital', label: 'Digital' },
+  { value: 'architecture', label: 'Design Espace' },
+  { value: 'digital', label: 'Design Digital' },
   { value: 'portfolio', label: 'Portfolio' },
   { value: 'about', label: 'À propos' },
   { value: 'contact', label: 'Contact' },
@@ -471,7 +471,7 @@ export default function PagesPage() {
                         <Field label={`Mots en surbrillance (${lang})`}><input type="text" value={(getNested('manifesto.highlights') as string[] || []).join(', ')} onChange={(e) => setNested('manifesto.highlights', e.target.value.split(',').map((s: string) => s.trim()).filter(Boolean))} className={`${inputCls} font-mono text-xs`} /></Field>
                       </Section>
 
-                      <Section title="Pôles (Architecture / Digital)">
+                      <Section title="Pôles (Design Espace / Design Digital)">
                         {([0, 1] as const).map((i) => (
                           <div key={i} className="p-3 bg-gray-50 rounded-lg space-y-3">
                             <p className="text-xs font-semibold text-secondary">Pôle {i + 1}</p>
@@ -686,10 +686,10 @@ export default function PagesPage() {
                         <Field label={`Paragraphes (${lang})`}><textarea value={(getNested('story.paragraphs') as string[] || []).join('\n\n')} onChange={(e) => setNested('story.paragraphs', e.target.value.split('\n\n').filter(Boolean))} rows={8} className={`${textareaCls(8)} text-sm leading-relaxed`} /></Field>
                       </Section>
 
-                      <Section title="Piliers (Architecture & Design)">
+                      <Section title="Piliers (Design Espace)">
                         <Field label={`Label section (${lang})`}><input type="text" value={getNested('pillars.label')} onChange={(e) => setNested('pillars.label', e.target.value)} className={inputCls} /></Field>
                         <div className="p-3 bg-gray-50 rounded-lg space-y-3">
-                          <p className="text-xs font-bold text-secondary">Architecture & Design</p>
+                          <p className="text-xs font-bold text-secondary">Design Espace</p>
                           <div className="grid sm:grid-cols-2 gap-3">
                             <Field label={`Titre (${lang})`}><input type="text" value={getNested('pillars.architecture.title')} onChange={(e) => setNested('pillars.architecture.title', e.target.value)} className={inputCls} /></Field>
                             <Field label={`Sous-titre (${lang})`}><input type="text" value={getNested('pillars.architecture.subtitle')} onChange={(e) => setNested('pillars.architecture.subtitle', e.target.value)} className={inputCls} /></Field>
@@ -703,9 +703,9 @@ export default function PagesPage() {
                         </div>
                       </Section>
 
-                      <Section title="Piliers (Digital & Logiciel)">
+                      <Section title="Piliers (Design Digital)">
                         <div className="p-3 bg-gray-50 rounded-lg space-y-3">
-                          <p className="text-xs font-bold text-secondary">Digital & Logiciel</p>
+                          <p className="text-xs font-bold text-secondary">Design Digital</p>
                           <div className="grid sm:grid-cols-2 gap-3">
                             <Field label={`Titre (${lang})`}><input type="text" value={getNested('pillars.digital.title')} onChange={(e) => setNested('pillars.digital.title', e.target.value)} className={inputCls} /></Field>
                             <Field label={`Sous-titre (${lang})`}><input type="text" value={getNested('pillars.digital.subtitle')} onChange={(e) => setNested('pillars.digital.subtitle', e.target.value)} className={inputCls} /></Field>

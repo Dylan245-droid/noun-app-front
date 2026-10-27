@@ -6,7 +6,7 @@ import { getSeoMetadata } from '@/lib/seo'
 import JsonLd from '@/components/seo/JsonLd'
 
 export async function generateMetadata(): Promise<Metadata> {
-  return getSeoMetadata('architecture', 'Architecture | Noun Concept', 'Nos services et réalisations en architecture.')
+  return getSeoMetadata('architecture', 'Design Espace | Noun Concept', "Architecture, aménagement & design d'intérieur — du concept à la réalisation.")
 }
 
 export default async function ArchitecturePage() {
@@ -38,7 +38,7 @@ export default async function ArchitecturePage() {
   const serviceSchema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    serviceType: 'Architecture & Design d\'espace',
+    serviceType: 'Design Espace — Architecture & Design d\'espace',
     provider: {
       '@type': 'Organization',
       name: 'NOUN CONCEPT'

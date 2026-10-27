@@ -271,8 +271,8 @@ export default function DashboardPage() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 divide-x divide-gray-50">
           {[
             { page: 'Accueil', slug: 'home' },
-            { page: 'Architecture', slug: 'architecture' },
-            { page: 'Digital', slug: 'digital' },
+            { page: 'Design Espace', slug: 'architecture' },
+            { page: 'Design Digital', slug: 'digital' },
             { page: 'Portfolio', slug: 'portfolio' },
             { page: 'À propos', slug: 'about' },
             { page: 'Contact', slug: 'contact' },

@@ -15,7 +15,7 @@ const DEFAULTS = {
     title_highlight1: "l'espace.",
     title_line2: 'Coder',
     title_highlight2: "l'avenir.",
-    subtitle: "Design d'espace, aménagement paysager & urbain.\nDéveloppement logiciel et solutions digitales sur mesure.",
+    subtitle: "Design Espace — architecture intérieure, aménagement paysager & urbain.\nDesign Digital — applications web, plateformes & solutions logicielles sur mesure.",
   },
   diapos: ['/diapo1.jpg', '/diapo2.jpg', '/diapo3.jpg', '/diapo4.jpg', '/diapo5.jpg', '/diapo6.jpg'],
   manifesto: {
@@ -24,8 +24,8 @@ const DEFAULTS = {
     highlights: ["l'espace", "pensé,", "ressenti,", "vécu.", "création."],
   },
   poles: [
-    { title: 'Architecture', description: "Aménagement paysager & urbain, mobiliers, œuvres d'art.", href: '/architecture' },
-    { title: 'Digital', description: 'Applications web, plateformes, consulting technique.', href: '/digital' },
+    { title: 'Design Espace', description: "Aménagement paysager & urbain, mobiliers, œuvres d'art.", href: '/architecture' },
+    { title: 'Design Digital', description: 'Applications web, plateformes, consulting technique.', href: '/digital' },
   ],
   stats: {
     label: 'Nos chiffres',
@@ -222,8 +222,12 @@ function PoleSection({ title, description, href }: {
   const imageY = useTransform(scrollYProgress, [0, 1], [-40, 40])
 
   const images: Record<string, string> = {
+    'Design Espace': 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80',
     'Architecture': 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80',
+    'Design Digital': 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=80',
     'Digital': 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=80',
+    'Space Design': 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80',
+    'Digital Design': 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=80',
   }
   const image = images[title] || '/diapo1.jpg'
 

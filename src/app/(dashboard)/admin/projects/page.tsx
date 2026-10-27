@@ -355,8 +355,8 @@ export default function ProjectsPage() {
                       onChange={(e) => setFormData({ ...formData, category: e.target.value as 'architecture' | 'digital' })}
                       className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                     >
-                      <option value="architecture">Architecture</option>
-                      <option value="digital">Digital</option>
+                      <option value="architecture">Design Espace</option>
+                      <option value="digital">Design Digital</option>
                     </select>
                   </div>
                 </div>
