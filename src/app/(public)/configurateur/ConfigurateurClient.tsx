@@ -143,6 +143,7 @@ export default function ConfigurateurClient() {
   const form = c.form || {}
   const actions = c.actions || {}
   const isEn = i18n.language === 'en'
+  const badgeText = hero.badge == null ? (isEn ? 'Beta version' : 'Version bêta') : hero.badge
 
   const [templates, setTemplates] = useState<Template[]>([])
   const [templateId, setTemplateId] = useState('')
@@ -479,6 +480,7 @@ export default function ConfigurateurClient() {
       <Hero
         image={data?.hero_image || '/diapo6.jpg'}
         label={hero.label || 'Configurateur 3D'}
+        badge={badgeText || undefined}
         title={hero.title || 'Aménagez votre espace'}
         subtitle={hero.subtitle}
         scrollLabel={t('common.scroll')}

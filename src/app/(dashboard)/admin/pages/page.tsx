@@ -779,6 +779,10 @@ export default function PagesPage() {
                           <div className="sm:col-span-2"><Field label={`Titre (${lang})`}><input type="text" value={getNested('hero.title')} onChange={(e) => setNested('hero.title', e.target.value)} className={inputCls} /></Field></div>
                         </div>
                         <Field label={`Sous-titre (${lang})`}><input type="text" value={getNested('hero.subtitle')} onChange={(e) => setNested('hero.subtitle', e.target.value)} className={inputCls} /></Field>
+                        <Field label={`Badge (${lang})`}>
+                          <input type="text" value={getNested('hero.badge')} onChange={(e) => setNested('hero.badge', e.target.value)} className={inputCls} placeholder="Version bêta" />
+                          <span className="block text-[10px] text-muted mt-1">Laisser vide puis enregistrer pour masquer le badge. Champ non défini = défaut « Version bêta ».</span>
+                        </Field>
                         <div className="pt-2 border-t border-gray-100">
                           <Field label="Image Hero">
                             <div className="flex items-start gap-3">

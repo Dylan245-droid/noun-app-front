@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 // On the server, we need an absolute URL to fetch data from the backend.
 // On the client, we use the proxy (e.g. /api) to avoid CORS issues and properly forward HttpOnly cookies.
 export const API_BASE_URL = typeof window === 'undefined'
@@ -57,7 +59,7 @@ export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
   
   const isFormData = options.body instanceof FormData;
   const defaultHeaders: Record<string, string> = {
-    'Accept-Language': 'fr',
+    'Accept-Language': i18next.language?.startsWith('en') ? 'en' : 'fr',
   };
   
   if (!isFormData) {

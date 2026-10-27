@@ -6,6 +6,7 @@ import { useRef } from 'react'
 interface HeroProps {
   image: string
   label?: string
+  badge?: string
   title: string
   subtitle?: string
   showGrid?: boolean
@@ -18,6 +19,7 @@ interface HeroProps {
 export function Hero({
   image,
   label,
+  badge,
   title,
   subtitle,
   showGrid = false,
@@ -92,17 +94,32 @@ export function Hero({
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl">
-            {label && (
+            {(label || badge) && (
               <motion.div
-                className="flex items-center gap-3 mb-6"
+                className="flex flex-wrap items-center gap-3 mb-6"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
               >
-                <span className="w-8 h-[1px] bg-white/40" />
-                <span className="text-[10px] tracking-[0.3em] uppercase text-white/50 font-medium">
-                  {label}
-                </span>
+                {label && (
+                  <>
+                    <span className="w-8 h-[1px] bg-white/40" />
+                    <span className="text-[10px] tracking-[0.3em] uppercase text-white/50 font-medium">
+                      {label}
+                    </span>
+                  </>
+                )}
+                {badge && (
+                  <motion.span
+                    className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-[10px] tracking-[0.2em] uppercase text-white/80 font-medium backdrop-blur-sm"
+                    initial={{ opacity: 0, scale: 0.85 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: 1, ease: [0.25, 0.1, 0.25, 1] }}
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                    {badge}
+                  </motion.span>
+                )}
               </motion.div>
             )}
 
