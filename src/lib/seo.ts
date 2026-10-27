@@ -1,10 +1,17 @@
 import { Metadata } from 'next'
 import { publicApi } from '@/services/api'
 
+const BRAND_PATTERN = /noun\s*concept/i
+
+export function ensureBrand(title: string, separator = ' | '): string {
+  if (!title.trim()) return 'NOUN CONCEPT'
+  return BRAND_PATTERN.test(title) ? title : `${title}${separator}NOUN CONCEPT`
+}
+
 export async function getSeoMetadata(pageName: string, defaultTitle: string, defaultDescription: string): Promise<Metadata> {
   const seoData = await publicApi.getSeo(pageName)
   
-  const title = seoData?.title || defaultTitle
+  const title = ensureBrand(seoData?.title || defaultTitle)
   const description = seoData?.meta_description || defaultDescription
   const keywords = seoData?.keywords || []
 
@@ -13,7 +20,7 @@ export async function getSeoMetadata(pageName: string, defaultTitle: string, def
     description,
     keywords,
     openGraph: {
-      title: seoData?.og_title || title,
+      title: ensureBrand(seoData?.og_title || title),
       description: seoData?.og_description || description,
       url: `https://nounconcept.com/${pageName === 'home' ? '' : pageName}`,
       siteName: 'NOUN CONCEPT',
@@ -23,7 +30,7 @@ export async function getSeoMetadata(pageName: string, defaultTitle: string, def
     },
     twitter: {
       card: 'summary_large_image',
-      title: seoData?.og_title || title,
+      title: ensureBrand(seoData?.og_title || title),
       description: seoData?.og_description || description,
       images: seoData?.og_image ? [seoData.og_image] : ['https://nounconcept.com/og-image.jpg'],
     },

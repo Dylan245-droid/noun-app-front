@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { fetchApi } from '@/services/api'
+import { ensureBrand } from '@/lib/seo'
 import ProjectDetailClient from './ProjectDetailClient'
 
 interface Props {
@@ -12,10 +13,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const resolvedParams = await params;
     const project = await fetchApi(`/portfolio/projects/${resolvedParams.slug}/`, { next: { revalidate: 60 } })
     
-    if (!project) return { title: 'Projet | Noun Concept' }
+    if (!project) return { title: ensureBrand('Projet') }
 
     return {
-      title: `${project.title} — NOUN CONCEPT`,
+      title: ensureBrand(project.title),
       description: project.short_description,
       keywords: `${project.category}, ${project.location || ''}, ${project.technologies || ''}, projet ${project.category}`,
       openGraph: {

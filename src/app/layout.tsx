@@ -17,10 +17,7 @@ import { Providers } from "@/components/providers/Providers";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://nounconcept.com'),
-  title: {
-    template: '%s | NOUN CONCEPT',
-    default: 'NOUN CONCEPT - Design Espace & Design Digital',
-  },
+  title: 'NOUN CONCEPT - Design Espace & Design Digital',
   description: 'Studio de design pluridisciplinaire basé à Libreville. Design d\'espace, aménagement paysager & urbain, et design digital : applications web et mobiles sur mesure.',
   openGraph: {
     title: 'NOUN CONCEPT - Design Espace & Design Digital',

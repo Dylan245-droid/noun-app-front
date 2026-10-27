@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { fetchApi } from '@/services/api'
+import { ensureBrand } from '@/lib/seo'
 import DynamicPageViewClient from './DynamicPageViewClient'
 
 interface Props {
@@ -13,10 +14,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (!page) return { title: 'Page | Noun Concept' }
 
     return {
-      title: page.meta_title || page.title || 'Page | Noun Concept',
+      title: ensureBrand(page.meta_title || page.title || 'Page'),
       description: page.meta_description,
       openGraph: {
-        title: page.meta_title || page.title,
+        title: ensureBrand(page.meta_title || page.title || 'Page'),
         description: page.meta_description,
         images: page.og_image ? [{ url: page.og_image }] : undefined,
       },
