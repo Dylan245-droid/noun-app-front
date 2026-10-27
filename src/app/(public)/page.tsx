@@ -2,18 +2,14 @@ import { Metadata } from 'next'
 import { getSeoMetadata } from '@/lib/seo'
 import HomePageClient from '@/components/home/HomePageClient'
 
-import { API_BASE_URL } from '@/services/api'
+import { fetchApi } from '@/services/api'
 
 async function fetchHomeData() {
-  const [pageRes, projectsRes, partnersRes] = await Promise.all([
-    fetch(`${API_BASE_URL}/pages/type/home/`, { cache: 'no-store' }).catch(() => null),
-    fetch(`${API_BASE_URL}/portfolio/projects/published/`, { cache: 'no-store' }).catch(() => null),
-    fetch(`${API_BASE_URL}/portfolio/clients/partners/`, { cache: 'no-store' }).catch(() => null),
+  const [data, projectsData, partnersData] = await Promise.all([
+    fetchApi('/pages/type/home/', { cache: 'no-store' }).catch(() => null),
+    fetchApi('/portfolio/projects/published/', { cache: 'no-store' }).catch(() => ({ results: [] })),
+    fetchApi('/portfolio/clients/partners/', { cache: 'no-store' }).catch(() => ({ results: [] })),
   ]);
-
-  const data = pageRes && pageRes.ok ? await pageRes.json() : null;
-  const projectsData = projectsRes && projectsRes.ok ? await projectsRes.json() : { results: [] };
-  const partnersData = partnersRes && partnersRes.ok ? await partnersRes.json() : { results: [] };
 
   const projects = projectsData.results || projectsData || [];
   const partners = partnersData.results || partnersData || [];

@@ -16,6 +16,7 @@ import "./globals.css";
 import { Providers } from "@/components/providers/Providers";
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://nounconcept.com'),
   title: {
     template: '%s | NOUN CONCEPT',
     default: 'NOUN CONCEPT - Architecture & Digital',
